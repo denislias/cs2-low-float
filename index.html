@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#111827">
+<meta name="theme-color" content="#121314">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,85 +12,552 @@
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <title>CS2 Low Float</title>
 <style>
-:root{--bg:#0b1220;--card:#141f31;--muted:#93a4ba;--text:#f7fafc;--line:#26364d}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-.wrap{max-width:780px;margin:auto;padding:16px 14px 90px}
-h1{font-size:24px;margin:4px 0}
-.sub{color:var(--muted);font-size:14px;margin-bottom:14px}
-.toolbar{position:sticky;top:0;z-index:5;background:linear-gradient(var(--bg) 80%,transparent);padding:8px 0 14px}
-.search{width:100%;border:1px solid var(--line);background:#0f1828;color:white;border-radius:12px;padding:13px 14px;font-size:16px}
-.filters{display:flex;gap:8px;overflow:auto;padding:10px 0 2px}
-.chip{white-space:nowrap;border:1px solid var(--line);background:#111b2c;color:#dbe6f5;border-radius:999px;padding:8px 11px;font-size:13px}
-.chip.active{border-color:#3b82f6;background:#172554}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}
-.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.name{font-weight:750;font-size:17px;line-height:1.25}
-.priority{font-size:12px;color:#08130c;background:#4ade80;border-radius:999px;padding:4px 8px;font-weight:800}
-.priority.second{background:#fbbf24;color:#211405}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
-label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}
-input{width:100%;border:1px solid var(--line);background:#0e1726;color:white;border-radius:10px;padding:10px;font-size:15px}
-.urlrow{margin-top:9px}
-.actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
-button,.open{border:0;border-radius:11px;padding:12px 14px;font-weight:750;font-size:15px;text-align:center;text-decoration:none}
-.open{background:#2563eb;color:white}
-.open.disabled{background:#334155;color:#94a3b8;pointer-events:none}
-button{background:#243246;color:white}
-.hint{font-size:12px;color:var(--muted);margin-top:7px}
-.status{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#052e16;color:#dcfce7;border:1px solid #166534;padding:10px 14px;border-radius:999px;opacity:0;transition:.2s;pointer-events:none}
-.status.show{opacity:1}
+:root{
+ --bg:#0e0f10;--panel:#17191b;--panel2:#1c1f21;--panel3:#111315;--line:#2a2d30;
+ --text:#f2f3f4;--soft:#b7bcc1;--muted:#7f858b;
+ --good:#a7e3b9;--goodBg:#15241a;--bad:#f0aaa5;--badBg:#2b1817;--warn:#e7ce99;--warnBg:#292317;
+ --white:#f2f3f4;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+button,input,select,textarea{font:inherit}
+.wrap{max-width:820px;margin:0 auto;padding:16px 14px 24px}
+.hero{display:flex;align-items:center;gap:12px;padding:3px 2px 15px}
+.appmark{width:45px;height:45px;border-radius:13px;object-fit:cover;border:1px solid #ffffff0b}
+.hero h1{margin:0;font-size:22px;letter-spacing:-.55px}.hero p{margin:3px 0 0;font-size:12px;color:var(--muted)}
+.page{display:none}.page.active{display:block}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 10px;min-width:0}
+.stat b{display:block;font-size:16px;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat span{font-size:10px;color:var(--muted)}
+.stat.good b{color:var(--good)} .stat.bad b{color:var(--bad)}
+.toolbar{position:sticky;top:0;z-index:20;background:linear-gradient(var(--bg) 82%,transparent);padding:6px 0 11px}
+.searchbox{position:relative}.search{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:14px;color:var(--text);padding:13px 14px 13px 39px;font-size:15px;outline:none}.search:focus{border-color:#4a4e53}.mag{position:absolute;left:14px;top:12px;color:var(--muted)}
+.filters{display:flex;gap:7px;overflow:auto;padding:9px 1px 1px;scrollbar-width:none}.filters::-webkit-scrollbar{display:none}
+.sortrow{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;margin-top:8px}.sortrow label{font-size:11px;color:var(--muted)}
+.sortselect{width:100%;background:#151719;border:1px solid var(--line);border-radius:11px;color:#d9dcdf;padding:9px 10px;font-size:12px;outline:none}
+.chip{white-space:nowrap;border:1px solid var(--line);background:#151719;color:var(--soft);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:650}.chip.active{background:#efefef;color:#111;border-color:#efefef}
+.card{background:linear-gradient(180deg,#191b1d,#151719);border:1px solid var(--line);border-radius:18px;margin:10px 0;overflow:hidden}
+.card-main{padding:15px}.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.name{font-size:17px;font-weight:730;line-height:1.25;letter-spacing:-.25px}
+.headRight{display:flex;align-items:center;gap:7px}.starbtn{border:0;background:transparent;color:#6f757b;font-size:25px;line-height:1;padding:0 2px;cursor:pointer}.starbtn.on{color:#f2d47a}
+.checkline{margin-top:8px;font-size:10px;color:#777e85;display:flex;align-items:center;gap:6px}.checkdot{width:6px;height:6px;border-radius:50%;background:#555b61;display:inline-block}
+.checkline.fresh{color:#a7e3b9}.checkline.fresh .checkdot{background:#a7e3b9}
+.tag{font-size:9px;font-weight:800;letter-spacing:.45px;padding:5px 8px;border-radius:999px;background:var(--goodBg);color:var(--good);border:1px solid #31543a}.tag.second{background:#222426;color:#a7adb3;border-color:#373b3f}
+.meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.pill{background:#202326;border:1px solid #2d3135;border-radius:9px;padding:6px 8px;font-size:11px;color:#b7bcc1}.pill strong{color:#f1f2f3}
+.numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.num{padding:10px;background:#111315;border:1px solid #25282b;border-radius:12px}.num label{display:block;color:#747a80;font-size:10px;margin-bottom:4px}.num b{font-size:14px}.pos{color:var(--good)!important}.neg{color:var(--bad)!important}
+.actions{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-top:12px}.btn,.open,.editbtn,.checkbtn{border:0;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:750;text-decoration:none;text-align:center;cursor:pointer}
+.checkbtn{background:#1e2a21;color:#a7e3b9;border:1px solid #304936;padding-left:12px;padding-right:12px}
+.open,.primary{background:#f1f2f3;color:#111}.open.disabled{background:#272a2d;color:#686e74;pointer-events:none}.editbtn,.secondary{background:#24272a;color:#d9dcdf;border:1px solid #303438}
+.danger{background:#2b1817;color:#f0aaa5;border:1px solid #5a2b27}
+.editor{display:none;border-top:1px solid var(--line);padding:13px 15px 15px;background:#121416}.editor.opened{display:block}
+.editgrid,.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field{margin-bottom:9px}.field.full{grid-column:1/-1}.field label{display:block;color:#777e85;font-size:10px;margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;background:#191b1d;border:1px solid #2b2f33;color:#f0f1f2;border-radius:10px;padding:10px 11px;font-size:13px;outline:none}
+.field textarea{min-height:76px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:#50555a}
+.sectionTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 1px 10px}.sectionTitle h2{font-size:18px;margin:0;letter-spacing:-.35px}.sectionTitle p{margin:2px 0 0;color:var(--muted);font-size:11px}
+.bigAdd{width:100%;border:1px dashed #3a3e42;background:#151719;color:#e5e6e7;border-radius:15px;padding:13px;font-weight:750;margin-bottom:10px}
+.trade{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin:9px 0}
+.tradeTop{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}.tradeName{font-weight:720;font-size:15px}.tradeSub{font-size:11px;color:var(--muted);margin-top:3px}.status{font-size:9px;font-weight:800;border-radius:999px;padding:5px 8px;white-space:nowrap}
+.status.open{background:var(--warnBg);color:var(--warn);border:1px solid #564824}.status.sold{background:var(--goodBg);color:var(--good);border:1px solid #31543a}
+.tradeNums{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}.tradeNum{background:#111315;border:1px solid #25282b;border-radius:11px;padding:9px}.tradeNum label{display:block;color:#757b81;font-size:9px;margin-bottom:4px}.tradeNum b{font-size:13px}
+.tradeNote{color:#9ba0a5;font-size:11px;margin-top:9px;line-height:1.4}
+.tradeActions{display:flex;gap:7px;margin-top:10px}.tradeActions button{flex:1;padding:9px 10px;border-radius:10px;border:1px solid #303438;background:#222527;color:#ddd;font-size:12px;font-weight:700}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:14px;margin:10px 0}
+.panel h3{margin:0 0 10px;font-size:15px}.rows{display:grid;gap:0}.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #26292c}.row:last-child{border-bottom:0}.row span{color:#8a9096;font-size:12px}.row b{font-size:13px;text-align:right}
+.financeItem{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #26292c}.financeItem:last-child{border:0}.financeMain b{font-size:13px}.financeMain small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.financeAmount{font-weight:750}
+.backup{display:grid;grid-template-columns:1fr 1fr;gap:8px}.backup button,.backup label{border:1px solid #303438;background:#202326;color:#e2e4e5;border-radius:12px;padding:11px;text-align:center;font-size:12px;font-weight:750;cursor:pointer}
+.empty{padding:34px 10px;text-align:center;color:var(--muted);font-size:13px}
+.modalWrap{position:fixed;inset:0;background:#000a;z-index:200;display:none;align-items:flex-end;justify-content:center}.modalWrap.show{display:flex}
+.modal{width:min(820px,100%);max-height:88vh;overflow:auto;background:#151719;border:1px solid #2c3033;border-radius:22px 22px 0 0;padding:17px 14px calc(17px + env(safe-area-inset-bottom));box-shadow:0 -20px 60px #0008}
+.modalHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.modalHead h3{margin:0;font-size:18px}.xbtn{border:0;background:#272a2d;color:#dfe1e3;border-radius:10px;width:34px;height:34px;font-size:18px}
+.modalActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.modalActions button{border:0;border-radius:12px;padding:12px;font-weight:750}
+.bottomNav{position:fixed;z-index:100;left:0;right:0;bottom:0;background:#121416ed;backdrop-filter:blur(14px);border-top:1px solid #292c2f;padding:7px 10px calc(7px + env(safe-area-inset-bottom));display:flex;justify-content:center}
+.navInner{width:min(820px,100%);display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.navbtn{border:0;background:transparent;color:#747b81;padding:8px 4px 6px;border-radius:12px;font-size:10px;font-weight:700}.navbtn .ico{display:block;font-size:19px;margin-bottom:2px}.navbtn.active{color:#f2f3f4;background:#1e2123}
+.toast{position:fixed;left:50%;bottom:88px;transform:translate(-50%,18px);background:#eceeef;color:#111;padding:10px 14px;border-radius:999px;font-size:12px;font-weight:750;opacity:0;transition:.2s;z-index:300}.toast.show{opacity:1;transform:translate(-50%,0)}
+.hidden{display:none!important}
+@media(max-width:390px){.summary{grid-template-columns:repeat(3,1fr)}.numbers,.tradeNums{grid-template-columns:1fr 1fr}.numbers .num:last-child,.tradeNums .tradeNum:last-child{grid-column:1/-1}.editgrid,.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<h1>🔥 CS2 Low Float</h1>
-<div class="sub">18 рабочих скинов. Настройки сохраняются на телефоне.</div>
-<div class="toolbar">
-<input id="search" class="search" placeholder="Поиск скина…">
-<div class="filters">
-<button class="chip active" data-filter="all">Все 18</button>
-<button class="chip" data-filter="top">🔥 В первую очередь</button>
-<button class="chip" data-filter="cheap">До 300 грн</button>
-</div>
-</div>
-<div id="cards"></div>
-</div>
-<div id="status" class="status">Сохранено ✓</div>
-<script>
-const skins = [{"name": "AK-47 | Красная линия", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "1580", "url": ""}, {"name": "Desert Eagle | Шелковица", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "125", "url": "https://steamcommunity.com/market/listings/730/G180120A60A3004?category_Weapon=weapon_deagle&category_Exterior=WearCategory2&appid=730&sort=0&dir=0&assetproperty=CAIVmpkZPh3NzEw%2B"}, {"name": "AWP | Экзоскелет", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "259", "url": ""}, {"name": "M4A4 | Турбина", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "75", "url": ""}, {"name": "M4A1-S | Взгляд в прошлое", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "211", "url": ""}, {"name": "M4A1-S | Ликвидация", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "123", "url": ""}, {"name": "AWP | Ледяной уголь", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "370", "url": ""}, {"name": "AWP | Green Energy", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "380", "url": ""}, {"name": "AK-47 | Нуво Руж", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "505", "url": ""}, {"name": "M4A1-S | Ночной кошмар", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "512", "url": ""}, {"name": "AK-47 | Полуночный глянец", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "170", "url": ""}, {"name": "AWP | Чёрный ящик", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "260", "url": ""}, {"name": "AK-47 | Дилетанты", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "352", "url": ""}, {"name": "USP-S | Зубоскал", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "202", "url": ""}, {"name": "AK-47 | Полёт журавля", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "824", "url": ""}, {"name": "AK-47 | Снежный вихрь", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "848", "url": ""}, {"name": "M4A1-S | Стратосфера", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "228", "url": ""}, {"name": "USP-S | Извилины", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "233", "url": ""}];
-const key="cs2_low_float_panel_v2";
-let data=JSON.parse(localStorage.getItem(key)||"null")||skins;
-const cards=document.getElementById("cards"),search=document.getElementById("search");
-let activeFilter="all";
-function esc(s){return (s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
-function save(){localStorage.setItem(key,JSON.stringify(data));const s=document.getElementById("status");s.classList.add("show");setTimeout(()=>s.classList.remove("show"),700);}
-function render(){
- const q=search.value.toLowerCase().trim(); cards.innerHTML="";
- data.forEach((s,i)=>{
-  const price=Number(s.maxPrice||0);
-  if(q&&!s.name.toLowerCase().includes(q))return;
-  if(activeFilter==="top"&&!s.top)return;
-  if(activeFilter==="cheap"&&(!price||price>300))return;
-  const el=document.createElement("div");el.className="card";
-  el.innerHTML=`<div class="top"><div class="name">${esc(s.name)}</div><div class="priority ${s.top?"":"second"}">${s.top?"🔥 ТОП":"2 очередь"}</div></div>
-  <div class="grid">
-  <div><label>Min float</label><input data-i="${i}" data-k="minFloat" inputmode="decimal" value="${esc(s.minFloat||"0.15")}"></div>
-  <div><label>Max float</label><input data-i="${i}" data-k="maxFloat" inputmode="decimal" value="${esc(s.maxFloat||"0.20")}"></div>
-  <div style="grid-column:1/-1"><label>Рабочая цена покупки, грн</label><input data-i="${i}" data-k="maxPrice" inputmode="decimal" value="${esc(s.maxPrice||"")}"></div>
+  <div class="hero">
+    <img class="appmark" src="./icon-192.png" alt="">
+    <div><h1>CS2 Low Float</h1><p id="heroSub">Ловля выгодных FT по float и цене</p></div>
   </div>
-  <div class="urlrow"><label>Твоя ссылка Steam с фильтрами</label><input data-i="${i}" data-k="url" placeholder="Вставь ссылку Steam…" value="${esc(s.url||"")}"></div>
-  <div class="actions"><a class="open ${s.url?"":"disabled"}" ${s.url?`href="${esc(s.url)}" target="_blank" rel="noopener"`:""}>Открыть Steam</a><button data-copy="${i}">Копировать</button></div>
-  <div class="hint">Все изменения сохраняются автоматически.</div>`;
-  cards.appendChild(el);
- });
- document.querySelectorAll("input[data-i]").forEach(inp=>inp.addEventListener("change",e=>{const i=+e.target.dataset.i,k=e.target.dataset.k;data[i][k]=e.target.value.trim();save();render();}));
- document.querySelectorAll("button[data-copy]").forEach(btn=>btn.addEventListener("click",async e=>{const s=data[+e.target.dataset.copy];const t=`${s.name}\nFloat: ${s.minFloat}–${s.maxFloat}\nЦена: ${s.maxPrice} грн\n${s.url||""}`;try{await navigator.clipboard.writeText(t)}catch{}}));
+
+  <section id="page-hunt" class="page active">
+    <div class="summary">
+      <div class="stat"><b id="countStat">18</b><span>скинов</span></div>
+      <div class="stat"><b id="avgRoi">—</b><span>средний ROI*</span></div>
+      <div class="stat" id="balanceHeroBox"><b id="balanceHero">—</b><span>свободный баланс</span></div>
+    </div>
+    <div class="toolbar">
+      <div class="searchbox"><span class="mag">⌕</span><input id="search" class="search" placeholder="Найти скин"></div>
+      <div class="filters">
+        <button class="chip active" data-filter="all">Все</button>
+        <button class="chip" data-filter="top">Приоритет</button>
+        <button class="chip" data-filter="cheap">До 300 ₴</button>
+        <button class="chip" data-filter="roi30">ROI 30%+</button>
+        <button class="chip" data-filter="fav">⭐ Избранное</button>
+      </div>
+      <div class="sortrow">
+        <label>Сортировка</label>
+        <select id="sortSelect" class="sortselect">
+          <option value="priority">По приоритету</option>
+          <option value="priceAsc">Цена ↑</option>
+          <option value="priceDesc">Цена ↓</option>
+          <option value="roiDesc">ROI ↓</option>
+          <option value="salesDesc">Продаж/день ↓</option>
+          <option value="floatAsc">Float ↑</option>
+          <option value="stale">Давно не проверял</option>
+        </select>
+      </div>
+    </div>
+    <div id="cards"></div>
+  </section>
+
+  <section id="page-trades" class="page">
+    <div class="summary">
+      <div class="stat"><b id="tradeCount">0</b><span>всего сделок</span></div>
+      <div class="stat good"><b id="realizedProfit">0 ₴</b><span>реализ. прибыль</span></div>
+      <div class="stat"><b id="inventoryCost">0 ₴</b><span>в предметах</span></div>
+    </div>
+    <button id="addTradeBtn" class="bigAdd">＋ Добавить сделку</button>
+    <div class="filters">
+      <button class="chip active" data-trade-filter="all">Все</button>
+      <button class="chip" data-trade-filter="open">В инвентаре</button>
+      <button class="chip" data-trade-filter="sold">Проданные</button>
+    </div>
+    <div id="tradeList"></div>
+  </section>
+
+  <section id="page-stats" class="page">
+    <div class="summary">
+      <div class="stat"><b id="spentStat">0 ₴</b><span>потрачено</span></div>
+      <div class="stat"><b id="receivedStat">0 ₴</b><span>получено чистыми</span></div>
+      <div class="stat good" id="profitStatBox"><b id="profitStat">0 ₴</b><span>реализ. + / −</span></div>
+    </div>
+
+    <div class="panel">
+      <h3>Торговый результат</h3>
+      <div class="rows">
+        <div class="row"><span>Куплено предметов</span><b id="itemsBought">0</b></div>
+        <div class="row"><span>Продано предметов</span><b id="itemsSold">0</b></div>
+        <div class="row"><span>Стоимость непроданных</span><b id="openCost">0 ₴</b></div>
+        <div class="row"><span>Ожидаемая прибыль непроданных*</span><b id="expectedOpen">0 ₴</b></div>
+        <div class="row"><span>Общий ROI проданных</span><b id="overallRoi">—</b></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="sectionTitle">
+        <div><h2>Пополнения Steam</h2><p>Не считаются торговой прибылью</p></div>
+        <button id="addFinanceBtn" class="btn secondary">＋</button>
+      </div>
+      <div class="rows">
+        <div class="row"><span>Всего пополнено</span><b id="depositsTotal">0 ₴</b></div>
+        <div class="row"><span>Текущий указанный баланс</span><b id="manualBalance">—</b></div>
+      </div>
+      <div id="financeList"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Резервная копия</h3>
+      <div class="backup">
+        <button id="exportBtn">Экспорт JSON</button>
+        <label>Импорт JSON<input id="importInput" class="hidden" type="file" accept="application/json"></label>
+      </div>
+      <div class="row" style="margin-top:6px"><span>Комиссия для расчётов</span><b><input id="feeInput" inputmode="decimal" value="13" style="width:62px;background:#111315;border:1px solid #303438;color:#eee;border-radius:8px;padding:6px;text-align:right"> %</b></div>
+      <div class="row"><span>Свободный баланс Steam</span><b><input id="balanceInput" inputmode="decimal" placeholder="156.70" style="width:92px;background:#111315;border:1px solid #303438;color:#eee;border-radius:8px;padding:6px;text-align:right"></b></div>
+      <div class="row"><span>Автоучёт покупок/продаж</span><b id="autoBalanceState">включён</b></div>
+      <div style="margin-top:8px;color:#777e85;font-size:10px;line-height:1.45">После того как укажешь баланс, новые покупки уменьшают его, а продажи увеличивают на сумму после комиссии. Старые сделки задним числом не пересчитываются.</div>
+    </div>
+  </section>
+</div>
+
+<nav class="bottomNav">
+  <div class="navInner">
+    <button class="navbtn active" data-page="hunt"><span class="ico">⌕</span>Поиск</button>
+    <button class="navbtn" data-page="trades"><span class="ico">≡</span>Сделки</button>
+    <button class="navbtn" data-page="stats"><span class="ico">◫</span>Статистика</button>
+  </div>
+</nav>
+
+<div id="tradeModal" class="modalWrap">
+  <div class="modal">
+    <div class="modalHead"><h3 id="tradeModalTitle">Новая сделка</h3><button class="xbtn" data-close="tradeModal">×</button></div>
+    <div class="formgrid">
+      <div class="field full"><label>Скин</label><select id="tSkin"></select></div>
+      <div class="field"><label>Float</label><input id="tFloat" inputmode="decimal" placeholder="0.183423"></div>
+      <div class="field"><label>Цена покупки, грн</label><input id="tBuy" inputmode="decimal" placeholder="349"></div>
+      <div class="field"><label>Дата покупки</label><input id="tBuyDate" type="date"></div>
+      <div class="field"><label>Статус</label><select id="tStatus"><option value="open">В инвентаре</option><option value="sold">Продан</option></select></div>
+      <div class="field"><label>Цена продажи, грн</label><input id="tSell" inputmode="decimal" placeholder="530"></div>
+      <div class="field"><label>Дата продажи</label><input id="tSellDate" type="date"></div>
+      <div class="field"><label>Цель продажи, грн</label><input id="tTarget" inputmode="decimal" placeholder="530"></div>
+      <div class="field full"><label>Заметка</label><textarea id="tNote" placeholder="Например: пойман почти по FT-минимуму"></textarea></div>
+    </div>
+    <input id="tId" type="hidden">
+    <div class="modalActions"><button class="secondary" data-close="tradeModal">Отмена</button><button id="saveTradeBtn" class="primary">Сохранить</button></div>
+  </div>
+</div>
+
+<div id="financeModal" class="modalWrap">
+  <div class="modal">
+    <div class="modalHead"><h3>Пополнение Steam</h3><button class="xbtn" data-close="financeModal">×</button></div>
+    <div class="formgrid">
+      <div class="field"><label>Сумма, грн</label><input id="fAmount" inputmode="decimal" placeholder="200"></div>
+      <div class="field"><label>Дата</label><input id="fDate" type="date"></div>
+      <div class="field full"><label>Заметка</label><input id="fNote" placeholder="Например: пополнил для торговли"></div>
+    </div>
+    <div class="modalActions"><button class="secondary" data-close="financeModal">Отмена</button><button id="saveFinanceBtn" class="primary">Добавить</button></div>
+  </div>
+</div>
+
+<div id="toast" class="toast">Сохранено</div>
+
+<script>
+const defaults = [{"name": "AK-47 | Красная линия", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 1800, "sell": 3000, "sales": 86, "url": ""}, {"name": "Desert Eagle | Шелковица", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 145, "sell": 232, "sales": 332, "url": "https://steamcommunity.com/market/listings/730/G180120A60A3004?price_max=15000&price_currency=18&category_Exterior=WearCategory2&appid=730&sort=0&dir=0&assetproperty=CAIVmpkZPh1cj0I%2B"}, {"name": "AWP | Экзоскелет", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 300, "sell": 480, "sales": 66, "url": ""}, {"name": "M4A4 | Турбина", "top": true, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 85, "sell": 133, "sales": 116, "url": ""}, {"name": "M4A1-S | Взгляд в прошлое", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 250, "sell": 370, "sales": 53, "url": ""}, {"name": "M4A1-S | Ликвидация", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 140, "sell": 205, "sales": 257, "url": ""}, {"name": "AWP | Ледяной уголь", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 425, "sell": 610, "sales": 110, "url": ""}, {"name": "AWP | Green Energy", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 430, "sell": 620, "sales": 167, "url": ""}, {"name": "AK-47 | Нуво Руж", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 550, "sell": 800, "sales": 132, "url": ""}, {"name": "M4A1-S | Ночной кошмар", "top": false, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 550, "sell": 800, "sales": 95, "url": ""}, {"name": "AK-47 | Полуночный глянец", "top": true, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 185, "sell": 263, "sales": 549, "url": ""}, {"name": "AWP | Чёрный ящик", "top": false, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 285, "sell": 400, "sales": 94, "url": ""}, {"name": "AK-47 | Дилетанты", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 380, "sell": 530, "sales": 120, "url": ""}, {"name": "USP-S | Зубоскал", "top": false, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 210, "sell": 290, "sales": 381, "url": ""}, {"name": "AK-47 | Полёт журавля", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 840, "sell": 1160, "sales": 242, "url": ""}, {"name": "AK-47 | Снежный вихрь", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 850, "sell": 1169, "sales": 109, "url": ""}, {"name": "M4A1-S | Стратосфера", "top": false, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 225, "sell": 310, "sales": 150, "url": ""}, {"name": "USP-S | Извилины", "top": false, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 225, "sell": 315, "sales": 227, "url": ""}];
+const SKIN_KEY='cs2_low_float_panel_v2';
+const TRADE_KEY='cs2_low_float_trades_v1';
+const FIN_KEY='cs2_low_float_finance_v1';
+const SETTINGS_KEY='cs2_low_float_settings_v1';
+
+function safeParse(k,fallback){try{const v=JSON.parse(localStorage.getItem(k)||'null');return v??fallback}catch{return fallback}}
+const old=safeParse(SKIN_KEY,[]);
+const oldMap=new Map((Array.isArray(old)?old:[]).map(x=>[x.name,x]));
+let data=defaults.map(d=>({...d,...(oldMap.get(d.name)||{}),sell:d.sell,sales:d.sales,top:d.top}));
+let trades=Array.isArray(safeParse(TRADE_KEY,[]))?safeParse(TRADE_KEY,[]):[];
+let finance=Array.isArray(safeParse(FIN_KEY,[]))?safeParse(FIN_KEY,[]):[];
+let settings={fee:13,balance:'',sort:'priority',...(safeParse(SETTINGS_KEY,{})||{})};
+
+// Backward compatibility: add new fields without losing saved links/settings.
+data=data.map(s=>({...s,favorite:!!s.favorite,lastChecked:s.lastChecked||null}));
+trades=trades.map(t=>({...t,walletTracked:!!t.walletTracked,walletBuyDebit:num(t.walletBuyDebit),walletSaleCredit:num(t.walletSaleCredit)}));
+
+let active='all',tradeFilter='all',currentPage='hunt';
+
+const $=id=>document.getElementById(id);
+const money=n=>`${Number(n||0).toLocaleString('ru-RU',{maximumFractionDigits:2})} ₴`;
+const num=v=>Number(String(v??'').replace(',','.'))||0;
+const today=()=>new Date().toISOString().slice(0,10);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function feeRate(){return Math.max(0,Math.min(100,num(settings.fee)))/100}
+function netSale(gross){return num(gross)*(1-feeRate())}
+function calcSkin(s){const buy=num(s.maxPrice),sell=num(s.sell),net=netSale(sell),profit=net-buy,roi=buy?profit/buy*100:0;return{net,profit,roi}}
+function calcTrade(t){
+ const buy=num(t.buy),gross=num(t.sell),target=num(t.target);
+ const sold=t.status==='sold';
+ const net=sold?netSale(gross):0;
+ const profit=sold?net-buy:0;
+ const roi=sold&&buy?profit/buy*100:0;
+ const expectedNet=!sold&&target?netSale(target):0;
+ const expectedProfit=!sold&&target?expectedNet-buy:0;
+ return{buy,gross,net,profit,roi,expectedNet,expectedProfit};
 }
-search.addEventListener("input",render);
-document.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");activeFilter=b.dataset.filter;render();}));
-if("serviceWorker" in navigator) window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));
-render();
+function hasBalance(){return settings.balance!=='' && Number.isFinite(num(settings.balance))}
+function currentBalance(){return hasBalance()?num(settings.balance):null}
+function setBalance(v){settings.balance=Math.max(0,Math.round((num(v)+Number.EPSILON)*100)/100)}
+function relTime(ts){
+ if(!ts)return 'ещё не проверял';
+ const sec=Math.max(0,Math.floor((Date.now()-Number(ts))/1000));
+ if(sec<60)return 'проверено только что';
+ const m=Math.floor(sec/60); if(m<60)return `проверено ${m} мин назад`;
+ const h=Math.floor(m/60); if(h<24)return `проверено ${h} ч назад`;
+ const d=Math.floor(h/24); return `проверено ${d} дн назад`;
+}
+function checkedFresh(ts){return ts && Date.now()-Number(ts)<15*60*1000}
+function affordability(price){
+ const b=currentBalance(); if(b===null)return {text:'баланс не указан',ok:null};
+ const diff=b-num(price);
+ return diff>=0?{text:`хватает · останется ${money(diff)}`,ok:true}:{text:`не хватает ${money(Math.abs(diff))}`,ok:false};
+}
+function sortSkins(arr){
+ const mode=settings.sort||'priority';
+ return [...arr].sort((a,b)=>{
+  if(mode==='priceAsc')return num(a.maxPrice)-num(b.maxPrice);
+  if(mode==='priceDesc')return num(b.maxPrice)-num(a.maxPrice);
+  if(mode==='roiDesc')return calcSkin(b).roi-calcSkin(a).roi;
+  if(mode==='salesDesc')return num(b.sales)-num(a.sales);
+  if(mode==='floatAsc')return num(a.maxFloat)-num(b.maxFloat) || num(a.maxPrice)-num(b.maxPrice);
+  if(mode==='stale'){
+   const ta=a.lastChecked?Number(a.lastChecked):0,tb=b.lastChecked?Number(b.lastChecked):0;
+   return ta-tb;
+  }
+  return Number(b.top)-Number(a.top) || Number(b.favorite)-Number(a.favorite) || num(b.sales)-num(a.sales);
+ });
+}
+function saveAll(){
+ localStorage.setItem(SKIN_KEY,JSON.stringify(data));
+ localStorage.setItem(TRADE_KEY,JSON.stringify(trades));
+ localStorage.setItem(FIN_KEY,JSON.stringify(finance));
+ localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));
+ toast('Сохранено');
+}
+function toast(text){
+ const t=$('toast');t.textContent=text;t.classList.add('show');clearTimeout(window.__tt);
+ window.__tt=setTimeout(()=>t.classList.remove('show'),1000);
+}
+function switchPage(p){
+ currentPage=p;
+ document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id==='page-'+p));
+ document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x.dataset.page===p));
+ $('heroSub').textContent=p==='hunt'?'Ловля выгодных FT по float и цене':p==='trades'?'Журнал покупок и продаж':'Реальный результат торговли';
+ if(p==='trades')renderTrades();
+ if(p==='stats')renderStats();
+ window.scrollTo({top:0,behavior:'instant'});
+}
+
+function renderHunt(){
+ const cards=$('cards'),q=$('search').value.trim().toLowerCase();cards.innerHTML='';
+ let arr=data.map((s,i)=>({...s,_i:i}));
+ arr=arr.filter(s=>{
+   const c=calcSkin(s),p=num(s.maxPrice);
+   if(q&&!s.name.toLowerCase().includes(q))return false;
+   if(active==='top'&&!s.top)return false;
+   if(active==='cheap'&&p>300)return false;
+   if(active==='roi30'&&c.roi<30)return false;
+   if(active==='fav'&&!s.favorite)return false;
+   return true;
+ });
+ arr=sortSkins(arr);
+ arr.forEach(s=>{
+   const i=s._i,c=calcSkin(s),aff=affordability(s.maxPrice);
+   const el=document.createElement('section');el.className='card';
+   el.innerHTML=`<div class="card-main">
+    <div class="head">
+      <div class="name">${esc(s.name)}</div>
+      <div class="headRight">
+        <button class="starbtn ${s.favorite?'on':''}" data-fav="${i}" aria-label="Избранное">${s.favorite?'★':'☆'}</button>
+        <div class="tag ${s.top?'':'second'}">${s.top?'ПРИОРИТЕТ':'ОБЫЧНЫЙ'}</div>
+      </div>
+    </div>
+    <div class="checkline ${checkedFresh(s.lastChecked)?'fresh':''}"><span class="checkdot"></span>${relTime(s.lastChecked)}</div>
+    <div class="meta">
+      <span class="pill">Float <strong>${esc(s.minFloat)}–${esc(s.maxFloat)}</strong></span>
+      <span class="pill">≈ <strong>${esc(s.sales)} продаж/день</strong></span>
+      <span class="pill"><strong style="color:${aff.ok===true?'var(--good)':aff.ok===false?'var(--bad)':'#b7bcc1'}">${esc(aff.text)}</strong></span>
+    </div>
+    <div class="numbers">
+      <div class="num"><label>Лимит покупки</label><b>${money(s.maxPrice)}</b></div>
+      <div class="num"><label>Прибыль при лимите*</label><b class="${c.profit>=0?'pos':'neg'}">${c.profit>=0?'+':''}${money(c.profit)}</b></div>
+      <div class="num"><label>ROI при лимите*</label><b class="${c.roi>=0?'pos':'neg'}">${c.roi.toFixed(1)}%</b></div>
+    </div>
+    <div class="actions">
+      <a class="open ${s.url?'':'disabled'}" data-open="${i}" ${s.url?`href="${esc(s.url)}" target="_blank" rel="noopener"`:''}>Открыть Steam</a>
+      <button class="checkbtn" data-check="${i}">✓</button>
+      <button class="editbtn" data-edit="${i}">Настроить</button>
+    </div>
+   </div>
+   <div class="editor" id="ed-${i}">
+    <div class="editgrid">
+      <div class="field"><label>Min float</label><input data-i="${i}" data-k="minFloat" inputmode="decimal" value="${esc(s.minFloat)}"></div>
+      <div class="field"><label>Max float</label><input data-i="${i}" data-k="maxFloat" inputmode="decimal" value="${esc(s.maxFloat)}"></div>
+      <div class="field"><label>Лимит покупки, грн</label><input data-i="${i}" data-k="maxPrice" inputmode="decimal" value="${esc(s.maxPrice)}"></div>
+      <div class="field"><label>Ожидаемая продажа, грн</label><input data-i="${i}" data-k="sell" inputmode="decimal" value="${esc(s.sell)}"></div>
+      <div class="field full"><label>Steam-ссылка с фильтрами</label><input data-i="${i}" data-k="url" value="${esc(s.url)}" placeholder="https://steamcommunity.com/market/..."></div>
+    </div>
+   </div>`;
+   cards.appendChild(el);
+ });
+ if(!arr.length)cards.innerHTML='<div class="empty">Ничего не найдено</div>';
+ document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>document.getElementById('ed-'+b.dataset.edit).classList.toggle('opened'));
+ document.querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>{
+   const i=+b.dataset.fav;data[i].favorite=!data[i].favorite;saveAll();renderHunt();
+ });
+ document.querySelectorAll('[data-check]').forEach(b=>b.onclick=()=>{
+   const i=+b.dataset.check;data[i].lastChecked=Date.now();saveAll();renderHunt();
+ });
+ document.querySelectorAll('[data-open]').forEach(a=>a.addEventListener('click',()=>{
+   const i=+a.dataset.open;if(data[i]?.url){data[i].lastChecked=Date.now();localStorage.setItem(SKIN_KEY,JSON.stringify(data));setTimeout(renderHunt,250)}
+ }));
+ document.querySelectorAll('input[data-i]').forEach(inp=>inp.onchange=e=>{
+   const i=+e.target.dataset.i,k=e.target.dataset.k;
+   data[i][k]=e.target.value.trim();saveAll();renderHunt();
+ });
+ const rois=data.map(s=>calcSkin(s).roi).filter(Number.isFinite);
+ $('countStat').textContent=data.length;
+ $('avgRoi').textContent=(rois.reduce((a,b)=>a+b,0)/rois.length).toFixed(0)+'%';
+ const bal=currentBalance();
+ $('balanceHero').textContent=bal===null?'—':money(bal);
+ $('balanceHeroBox').className='stat '+(bal!==null&&bal>0?'good':'');
+ $('sortSelect').value=settings.sort||'priority';
+}
+function openTradeModal(id=null){
+ const t=id?trades.find(x=>x.id===id):null;
+ $('tradeModalTitle').textContent=t?'Редактировать сделку':'Новая сделка';
+ $('tId').value=t?.id||'';
+ $('tSkin').innerHTML=data.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('')+'<option value="Другое">Другое</option>';
+ $('tSkin').value=t?.skin||data[0].name;
+ $('tFloat').value=t?.float||'';
+ $('tBuy').value=t?.buy||'';
+ $('tBuyDate').value=t?.buyDate||today();
+ $('tStatus').value=t?.status||'open';
+ $('tSell').value=t?.sell||'';
+ $('tSellDate').value=t?.sellDate||'';
+ const skin=data.find(s=>s.name===(t?.skin||$('tSkin').value));
+ $('tTarget').value=t?.target||skin?.sell||'';
+ $('tNote').value=t?.note||'';
+ $('tradeModal').classList.add('show');
+}
+function closeModal(id){$(id).classList.remove('show')}
+function saveTrade(){
+ const id=$('tId').value||uid(),skin=$('tSkin').value,buy=num($('tBuy').value);
+ if(!buy){toast('Укажи цену покупки');return}
+ const existing=trades.find(x=>x.id===id)||null;
+ const t={
+  id,skin,float:$('tFloat').value.trim(),buy,buyDate:$('tBuyDate').value||today(),
+  status:$('tStatus').value,sell:num($('tSell').value),sellDate:$('tSellDate').value,
+  target:num($('tTarget').value),note:$('tNote').value.trim(),
+  walletTracked: existing?.walletTracked || false,
+  walletBuyDebit: num(existing?.walletBuyDebit),
+  walletSaleCredit: num(existing?.walletSaleCredit)
+ };
+ if(t.status==='sold'&&!t.sell){toast('Укажи цену продажи');return}
+
+ // Automatic free-balance accounting applies only when a balance is already set.
+ if(hasBalance()){
+   if(!existing){
+     t.walletTracked=true;
+     t.walletBuyDebit=t.buy;
+     t.walletSaleCredit=t.status==='sold'?netSale(t.sell):0;
+     setBalance(currentBalance()-t.walletBuyDebit+t.walletSaleCredit);
+   }else if(existing.walletTracked){
+     const oldDebit=num(existing.walletBuyDebit)||num(existing.buy);
+     const oldCredit=num(existing.walletSaleCredit);
+     const newDebit=t.buy;
+     const newCredit=t.status==='sold'?netSale(t.sell):0;
+     setBalance(currentBalance() + oldDebit - oldCredit - newDebit + newCredit);
+     t.walletTracked=true;t.walletBuyDebit=newDebit;t.walletSaleCredit=newCredit;
+   }
+ }
+ const idx=trades.findIndex(x=>x.id===id);
+ if(idx>=0)trades[idx]=t;else trades.unshift(t);
+ saveAll();closeModal('tradeModal');renderTrades();renderStats();renderHunt();
+}
+function renderTrades(){
+ $('tradeCount').textContent=trades.length;
+ const sold=trades.filter(t=>t.status==='sold'),open=trades.filter(t=>t.status!=='sold');
+ const realized=sold.reduce((a,t)=>a+calcTrade(t).profit,0);
+ const inv=open.reduce((a,t)=>a+num(t.buy),0);
+ $('realizedProfit').textContent=(realized>=0?'+':'')+money(realized);
+ $('realizedProfit').className=realized>=0?'pos':'neg';
+ $('inventoryCost').textContent=money(inv);
+ const list=$('tradeList');list.innerHTML='';
+ let arr=trades.filter(t=>tradeFilter==='all'||t.status===tradeFilter);
+ if(!arr.length){list.innerHTML='<div class="empty">Пока сделок нет</div>';return}
+ arr.forEach(t=>{
+  const c=calcTrade(t),sold=t.status==='sold';
+  const el=document.createElement('div');el.className='trade';
+  el.innerHTML=`<div class="tradeTop"><div><div class="tradeName">${esc(t.skin)}</div><div class="tradeSub">${t.float?`Float ${esc(t.float)} · `:''}${esc(t.buyDate||'')}</div></div><span class="status ${sold?'sold':'open'}">${sold?'ПРОДАН':'В ИНВЕНТАРЕ'}</span></div>
+   <div class="tradeNums">
+    <div class="tradeNum"><label>Покупка</label><b>${money(t.buy)}</b></div>
+    <div class="tradeNum"><label>${sold?'Продажа':'Цель'}</label><b>${money(sold?t.sell:t.target)}</b></div>
+    <div class="tradeNum"><label>${sold?'Прибыль':'Ожидаемо*'}</label><b class="${(sold?c.profit:c.expectedProfit)>=0?'pos':'neg'}">${(sold?c.profit:c.expectedProfit)>=0?'+':''}${money(sold?c.profit:c.expectedProfit)}</b></div>
+   </div>
+   ${t.note?`<div class="tradeNote">${esc(t.note)}</div>`:''}
+   <div class="tradeActions"><button data-tedit="${t.id}">Изменить</button><button data-tdelete="${t.id}">Удалить</button></div>`;
+  list.appendChild(el);
+ });
+ document.querySelectorAll('[data-tedit]').forEach(b=>b.onclick=()=>openTradeModal(b.dataset.tedit));
+ document.querySelectorAll('[data-tdelete]').forEach(b=>b.onclick=()=>{
+   if(confirm('Удалить эту сделку?')){
+     const old=trades.find(x=>x.id===b.dataset.tdelete);
+     if(old?.walletTracked && hasBalance())setBalance(currentBalance()+num(old.walletBuyDebit)-num(old.walletSaleCredit));
+     trades=trades.filter(x=>x.id!==b.dataset.tdelete);saveAll();renderTrades();renderStats();renderHunt()
+   }
+ });
+}
+
+function openFinanceModal(){
+ $('fAmount').value='';$('fDate').value=today();$('fNote').value='';$('financeModal').classList.add('show');
+}
+function saveFinance(){
+ const amount=num($('fAmount').value);if(!amount){toast('Укажи сумму');return}
+ finance.unshift({id:uid(),amount,date:$('fDate').value||today(),note:$('fNote').value.trim()});
+ if(hasBalance())setBalance(currentBalance()+amount);
+ saveAll();closeModal('financeModal');renderStats();renderHunt();
+}
+function renderStats(){
+ const sold=trades.filter(t=>t.status==='sold'),open=trades.filter(t=>t.status!=='sold');
+ const spent=trades.reduce((a,t)=>a+num(t.buy),0);
+ const received=sold.reduce((a,t)=>a+calcTrade(t).net,0);
+ const realized=sold.reduce((a,t)=>a+calcTrade(t).profit,0);
+ const soldCost=sold.reduce((a,t)=>a+num(t.buy),0);
+ const openCost=open.reduce((a,t)=>a+num(t.buy),0);
+ const expected=open.reduce((a,t)=>a+calcTrade(t).expectedProfit,0);
+ const roi=soldCost?realized/soldCost*100:0;
+ $('spentStat').textContent=money(spent);
+ $('receivedStat').textContent=money(received);
+ $('profitStat').textContent=(realized>=0?'+':'')+money(realized);
+ $('profitStat').className=realized>=0?'pos':'neg';
+ $('profitStatBox').className='stat '+(realized>=0?'good':'bad');
+ $('itemsBought').textContent=trades.length;
+ $('itemsSold').textContent=sold.length;
+ $('openCost').textContent=money(openCost);
+ $('expectedOpen').textContent=(expected>=0?'+':'')+money(expected);
+ $('overallRoi').textContent=sold.length?roi.toFixed(1)+'%':'—';
+ const dep=finance.reduce((a,x)=>a+num(x.amount),0);
+ $('depositsTotal').textContent=money(dep);
+ $('manualBalance').textContent=settings.balance!==''?money(settings.balance):'—';
+ $('autoBalanceState').textContent=hasBalance()?'включён':'ждёт баланс';
+ $('autoBalanceState').className=hasBalance()?'pos':'';
+ $('feeInput').value=settings.fee;
+ $('balanceInput').value=settings.balance;
+ const fl=$('financeList');fl.innerHTML='';
+ finance.forEach(f=>{
+  const d=document.createElement('div');d.className='financeItem';
+  d.innerHTML=`<div class="financeMain"><b>Пополнение</b><small>${esc(f.date)}${f.note?' · '+esc(f.note):''}</small></div><div><span class="financeAmount">+${money(f.amount)}</span> <button data-fdel="${f.id}" style="margin-left:5px;border:0;background:transparent;color:#777">×</button></div>`;
+  fl.appendChild(d);
+ });
+ document.querySelectorAll('[data-fdel]').forEach(b=>b.onclick=()=>{if(confirm('Удалить запись о пополнении?')){
+    const old=finance.find(x=>x.id===b.dataset.fdel);
+    if(old&&hasBalance())setBalance(Math.max(0,currentBalance()-num(old.amount)));
+    finance=finance.filter(x=>x.id!==b.dataset.fdel);saveAll();renderStats();renderHunt()
+   }});
+}
+
+function exportData(){
+ const blob=new Blob([JSON.stringify({version:5,exportedAt:new Date().toISOString(),skins:data,trades,finance,settings},null,2)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='cs2-low-float-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function importData(file){
+ const r=new FileReader();r.onload=()=>{
+  try{
+   const x=JSON.parse(r.result);
+   if(Array.isArray(x.skins))data=x.skins.map(s=>({...s,favorite:!!s.favorite,lastChecked:s.lastChecked||null}));
+   if(Array.isArray(x.trades))trades=x.trades.map(t=>({...t,walletTracked:!!t.walletTracked,walletBuyDebit:num(t.walletBuyDebit),walletSaleCredit:num(t.walletSaleCredit)}));
+   if(Array.isArray(x.finance))finance=x.finance;
+   if(x.settings)settings={...settings,...x.settings};
+   saveAll();renderHunt();renderTrades();renderStats();toast('Импортировано');
+  }catch{toast('Ошибка файла')}
+ };r.readAsText(file);
+}
+
+$('search').oninput=renderHunt;
+$('sortSelect').onchange=e=>{settings.sort=e.target.value;saveAll();renderHunt()};
+document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');active=b.dataset.filter;renderHunt()});
+document.querySelectorAll('[data-trade-filter]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-trade-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');tradeFilter=b.dataset.tradeFilter;renderTrades()});
+document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>switchPage(b.dataset.page));
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
+document.querySelectorAll('.modalWrap').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
+$('addTradeBtn').onclick=()=>openTradeModal();
+$('saveTradeBtn').onclick=saveTrade;
+$('addFinanceBtn').onclick=openFinanceModal;
+$('saveFinanceBtn').onclick=saveFinance;
+$('exportBtn').onclick=exportData;
+$('importInput').onchange=e=>{if(e.target.files?.[0])importData(e.target.files[0]);e.target.value=''};
+$('feeInput').onchange=e=>{settings.fee=num(e.target.value)||13;saveAll();renderHunt();renderTrades();renderStats()};
+$('balanceInput').onchange=e=>{
+ const v=e.target.value.trim();
+ settings.balance=v===''?'':Math.max(0,num(v));
+ saveAll();renderStats();renderHunt();
+};
+$('tSkin').onchange=e=>{const s=data.find(x=>x.name===e.target.value);if(s&&!$('tTarget').value)$('tTarget').value=s.sell||''};
+
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
+renderHunt();renderTrades();renderStats();
 </script>
 </body>
 </html>
