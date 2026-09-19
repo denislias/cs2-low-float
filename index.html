@@ -9,9 +9,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="./manifest.json?v=8">
-<link rel="icon" href="./icon-192.png?v=8">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8">
+<link rel="manifest" href="./manifest.json?v=11">
+<link rel="icon" href="./icon-192.png?v=11">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=11">
 <title>Floatly</title>
 <style>
 :root{
@@ -47,7 +47,7 @@ button,input,select,textarea{font:inherit}
 .checkline.fresh{color:#a7e3b9}.checkline.fresh .checkdot{background:#a7e3b9}
 .tag{font-size:9px;font-weight:800;letter-spacing:.45px;padding:5px 8px;border-radius:999px;background:var(--goodBg);color:var(--good);border:1px solid #31543a}.tag.second{background:#222426;color:#a7adb3;border-color:#373b3f}
 .meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.pill{background:#202326;border:1px solid #2d3135;border-radius:9px;padding:6px 8px;font-size:11px;color:#b7bcc1}.pill strong{color:#f1f2f3}
-.numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.num{padding:10px;background:#111315;border:1px solid #25282b;border-radius:12px}.num label{display:block;color:#747a80;font-size:10px;margin-bottom:4px}.num b{font-size:14px}.pos{color:var(--good)!important}.neg{color:var(--bad)!important}
+.numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.num{padding:10px;background:#111315;border:1px solid #25282b;border-radius:12px}.num label{display:block;color:#747a80;font-size:10px;margin-bottom:4px}.num b{font-size:14px}.pos{color:var(--good)!important}.neg{color:var(--bad)!important}
 .actions{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-top:12px}.btn,.open,.editbtn,.checkbtn{border:0;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:750;text-decoration:none;text-align:center;cursor:pointer}
 .checkbtn{background:#1e2a21;color:#a7e3b9;border:1px solid #304936;padding-left:12px;padding-right:12px}
 .open,.primary{background:#f1f2f3;color:#111}.open.disabled{background:#272a2d;color:#686e74;pointer-events:none}.editbtn,.secondary{background:#24272a;color:#d9dcdf;border:1px solid #303438}
@@ -77,7 +77,7 @@ button,input,select,textarea{font:inherit}
 .navInner{width:min(820px,100%);display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.navbtn{border:0;background:transparent;color:#747b81;padding:8px 4px 6px;border-radius:12px;font-size:10px;font-weight:700}.navbtn .ico{display:block;font-size:19px;margin-bottom:2px}.navbtn.active{color:#f2f3f4;background:#1e2123}
 .toast{position:fixed;left:50%;bottom:88px;transform:translate(-50%,18px);background:#eceeef;color:#111;padding:10px 14px;border-radius:999px;font-size:12px;font-weight:750;opacity:0;transition:.2s;z-index:300}.toast.show{opacity:1;transform:translate(-50%,0)}
 .hidden{display:none!important}
-@media(max-width:390px){.summary{grid-template-columns:repeat(3,1fr)}.numbers,.tradeNums{grid-template-columns:1fr 1fr}.numbers .num:last-child,.tradeNums .tradeNum:last-child{grid-column:1/-1}.editgrid,.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+@media(max-width:390px){.summary{grid-template-columns:repeat(3,1fr)}.numbers,.tradeNums{grid-template-columns:1fr 1fr}.tradeNums .tradeNum:last-child{grid-column:1/-1}.editgrid,.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
 </style>
 </head>
 <body>
@@ -189,7 +189,7 @@ button,input,select,textarea{font:inherit}
   <div class="modal">
     <div class="modalHead"><h3 id="tradeModalTitle">Новая сделка</h3><button class="xbtn" data-close="tradeModal">×</button></div>
     <div class="formgrid">
-      <div class="field full"><label>Скин</label><select id="tSkin"></select></div>
+      <div class="field full"><label>Название</label><input id="tSkin" placeholder="Добавить название вручную"></div>
       <div class="field"><label>Float</label><input id="tFloat" inputmode="decimal" placeholder="0.183423"></div>
       <div class="field"><label>Цена покупки, грн</label><input id="tBuy" inputmode="decimal" placeholder="349"></div>
       <div class="field"><label>Дата покупки</label><input id="tBuyDate" type="date"></div>
@@ -233,15 +233,15 @@ let trades=Array.isArray(safeParse(TRADE_KEY,[]))?safeParse(TRADE_KEY,[]):[];
 let finance=Array.isArray(safeParse(FIN_KEY,[]))?safeParse(FIN_KEY,[]):[];
 let settings={fee:13,balance:'',sort:'priority',...(safeParse(SETTINGS_KEY,{})||{})};
 
-// Backward compatibility: add new fields without losing saved links/settings.
-data=data.map(s=>({...s,favorite:!!s.favorite,lastChecked:s.lastChecked||null}));
-trades=trades.map(t=>({...t,walletTracked:!!t.walletTracked,walletBuyDebit:num(t.walletBuyDebit),walletSaleCredit:num(t.walletSaleCredit)}));
-
 let active='all',tradeFilter='all',currentPage='hunt';
 
 const $=id=>document.getElementById(id);
 const money=n=>`${Number(n||0).toLocaleString('ru-RU',{maximumFractionDigits:2})} ₴`;
 const num=v=>Number(String(v??'').replace(',','.'))||0;
+
+// Backward compatibility: add new fields without losing saved links/settings.
+data=data.map(s=>({...s,favorite:!!s.favorite,lastChecked:s.lastChecked||null}));
+trades=trades.map(t=>({...t,walletTracked:!!t.walletTracked,walletBuyDebit:num(t.walletBuyDebit),walletSaleCredit:num(t.walletSaleCredit)}));
 const today=()=>new Date().toISOString().slice(0,10);
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -343,6 +343,7 @@ function renderHunt(){
     </div>
     <div class="numbers">
       <div class="num"><label>Лимит покупки</label><b>${money(s.maxPrice)}</b></div>
+      <div class="num"><label>Ожидаемая продажа</label><b>${money(s.sell)}</b></div>
       <div class="num"><label>Прибыль при лимите*</label><b class="${c.profit>=0?'pos':'neg'}">${c.profit>=0?'+':''}${money(c.profit)}</b></div>
       <div class="num"><label>ROI при лимите*</label><b class="${c.roi>=0?'pos':'neg'}">${c.roi.toFixed(1)}%</b></div>
     </div>
@@ -390,22 +391,21 @@ function openTradeModal(id=null){
  const t=id?trades.find(x=>x.id===id):null;
  $('tradeModalTitle').textContent=t?'Редактировать сделку':'Новая сделка';
  $('tId').value=t?.id||'';
- $('tSkin').innerHTML=data.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('')+'<option value="Другое">Другое</option>';
- $('tSkin').value=t?.skin||data[0].name;
+ $('tSkin').value=t?.skin||'';
  $('tFloat').value=t?.float||'';
  $('tBuy').value=t?.buy||'';
  $('tBuyDate').value=t?.buyDate||today();
  $('tStatus').value=t?.status||'open';
  $('tSell').value=t?.sell||'';
  $('tSellDate').value=t?.sellDate||'';
- const skin=data.find(s=>s.name===(t?.skin||$('tSkin').value));
- $('tTarget').value=t?.target||skin?.sell||'';
+ $('tTarget').value=t?.target||'';
  $('tNote').value=t?.note||'';
  $('tradeModal').classList.add('show');
 }
 function closeModal(id){$(id).classList.remove('show')}
 function saveTrade(){
- const id=$('tId').value||uid(),skin=$('tSkin').value,buy=num($('tBuy').value);
+ const id=$('tId').value||uid(),skin=$('tSkin').value.trim(),buy=num($('tBuy').value);
+ if(!skin){toast('Добавь название');return}
  if(!buy){toast('Укажи цену покупки');return}
  const existing=trades.find(x=>x.id===id)||null;
  const t={
@@ -556,7 +556,6 @@ $('balanceInput').onchange=e=>{
  settings.balance=v===''?'':Math.max(0,num(v));
  saveAll();renderStats();renderHunt();
 };
-$('tSkin').onchange=e=>{const s=data.find(x=>x.name===e.target.value);if(s&&!$('tTarget').value)$('tTarget').value=s.sell||''};
 
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
 renderHunt();renderTrades();renderStats();
