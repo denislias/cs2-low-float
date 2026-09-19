@@ -104,12 +104,9 @@ button,input,select,textarea{font:inherit}
         <label>Сортировка</label>
         <select id="sortSelect" class="sortselect">
           <option value="priority">По приоритету</option>
-          <option value="manual">Своя сортировка</option>
           <option value="priceAsc">Цена ↑</option>
           <option value="priceDesc">Цена ↓</option>
           <option value="roiDesc">ROI ↓</option>
-          <option value="salesDesc">Продаж/день ↓</option>
-          <option value="floatAsc">Float ↑</option>
           <option value="stale">Давно не проверял</option>
         </select>
       </div>
@@ -218,7 +215,7 @@ button,input,select,textarea{font:inherit}
 <div id="toast" class="toast">Сохранено</div>
 
 <script>
-const defaults = [{"name": "AK-47 | Красная линия", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 2200, "sell": 3000, "sales": 86, "url": ""}, {"name": "Desert Eagle | Шелковица", "top": true, "minFloat": "0.150", "maxFloat": "0.210", "maxPrice": 150, "sell": 232, "sales": 332, "url": "https://steamcommunity.com/market/listings/730/G180120A60A3004?price_max=15000&price_currency=18&category_Exterior=WearCategory2&appid=730&sort=0&dir=0&assetproperty=CAIVmpkZPh1cj0I%2B"}, {"name": "AWP | Экзоскелет", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 340, "sell": 480, "sales": 66, "url": ""}, {"name": "M4A1-S | Ликвидация", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 145, "sell": 205, "sales": 257, "url": ""}, {"name": "AWP | Ледяной уголь", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 460, "sell": 610, "sales": 110, "url": ""}, {"name": "AWP | Зелёная энергия", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 470, "sell": 620, "sales": 167, "url": ""}, {"name": "AK-47 | Нуво Руж", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 620, "sell": 800, "sales": 132, "url": ""}, {"name": "M4A1-S | Ночной кошмар", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 620, "sell": 800, "sales": 95, "url": ""}, {"name": "AK-47 | Полуночный глянец", "top": true, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 195, "sell": 263, "sales": 549, "url": ""}, {"name": "AK-47 | Дилетанты", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 400, "sell": 530, "sales": 120, "url": ""}, {"name": "USP-S | Зубоскал", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 215, "sell": 290, "sales": 381, "url": ""}, {"name": "AK-47 | Полёт журавля", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 930, "sell": 1160, "sales": 242, "url": ""}, {"name": "AK-47 | Снежный вихрь", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 930, "sell": 1169, "sales": 109, "url": ""}, {"name": "M4A1-S | Стратосфера", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 300, "sell": 310, "sales": 150, "url": ""}, {"name": "USP-S | Извилины", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 235, "sell": 315, "sales": 227, "url": ""}];
+const defaults = [{"name":"Desert Eagle | Шелковица","rank":1,"top":true,"minFloat":"0.150","maxFloat":"0.210","maxPrice":150,"sell":232,"sales":332,"url":"https://steamcommunity.com/market/listings/730/G180120A60A3004?price_max=15000&price_currency=18&category_Exterior=WearCategory2&appid=730&sort=0&dir=0&assetproperty=CAIVmpkZPh1cj0I%2B"},{"name":"M4A1-S | Ликвидация","rank":2,"top":true,"minFloat":"0.150","maxFloat":"0.200","maxPrice":145,"sell":205,"sales":257,"url":""},{"name":"AK-47 | Полуночный глянец","rank":3,"top":true,"minFloat":"0.150","maxFloat":"0.180","maxPrice":195,"sell":263,"sales":549,"url":""},{"name":"USP-S | Зубоскал","rank":4,"top":true,"minFloat":"0.150","maxFloat":"0.190","maxPrice":215,"sell":290,"sales":381,"url":""},{"name":"AK-47 | Дилетанты","rank":5,"top":true,"minFloat":"0.150","maxFloat":"0.200","maxPrice":400,"sell":530,"sales":120,"url":""},{"name":"AWP | Зелёная энергия","rank":6,"top":true,"minFloat":"0.150","maxFloat":"0.200","maxPrice":470,"sell":620,"sales":167,"url":""},{"name":"M4A1-S | Стратосфера","rank":7,"top":true,"minFloat":"0.150","maxFloat":"0.200","maxPrice":300,"sell":400,"sales":150,"url":""},{"name":"AWP | Экзоскелет","rank":8,"top":true,"minFloat":"0.150","maxFloat":"0.200","maxPrice":340,"sell":480,"sales":66,"url":""},{"name":"AWP | Ледяной уголь","rank":9,"top":true,"minFloat":"0.150","maxFloat":"0.200","maxPrice":460,"sell":610,"sales":110,"url":""},{"name":"AK-47 | Нуво Руж","rank":10,"top":true,"minFloat":"0.150","maxFloat":"0.200","maxPrice":620,"sell":800,"sales":132,"url":""},{"name":"M4A1-S | Ночной кошмар","rank":11,"top":false,"minFloat":"0.150","maxFloat":"0.200","maxPrice":620,"sell":800,"sales":95,"url":""},{"name":"USP-S | Извилины","rank":12,"top":false,"minFloat":"0.150","maxFloat":"0.190","maxPrice":235,"sell":315,"sales":227,"url":""},{"name":"AK-47 | Красная линия","rank":13,"top":false,"minFloat":"0.150","maxFloat":"0.200","maxPrice":2200,"sell":3000,"sales":86,"url":""},{"name":"AK-47 | Полёт журавля","rank":14,"top":false,"minFloat":"0.150","maxFloat":"0.200","maxPrice":930,"sell":1160,"sales":242,"url":""},{"name":"AK-47 | Снежный вихрь","rank":15,"top":false,"minFloat":"0.150","maxFloat":"0.200","maxPrice":930,"sell":1169,"sales":109,"url":""}];
 const SKIN_KEY='cs2_low_float_panel_v2';
 const TRADE_KEY='cs2_low_float_trades_v1';
 const FIN_KEY='cs2_low_float_finance_v1';
@@ -231,10 +228,11 @@ if(oldMap.has('AWP | Green Energy')&&!oldMap.has('AWP | Зелёная энер�
  const legacy=oldMap.get('AWP | Green Energy');
  oldMap.set('AWP | Зелёная энергия',{...legacy,name:'AWP | Зелёная энергия'});
 }
-let data=defaults.map(d=>({...d,...(oldMap.get(d.name)||{}),name:d.name,sell:d.sell,sales:d.sales,top:d.top}));
+let data=defaults.map(d=>({...d,...(oldMap.get(d.name)||{}),name:d.name,rank:d.rank,sell:d.sell,sales:d.sales,top:d.top}));
 let trades=Array.isArray(safeParse(TRADE_KEY,[]))?safeParse(TRADE_KEY,[]):[];
 let finance=Array.isArray(safeParse(FIN_KEY,[]))?safeParse(FIN_KEY,[]):[];
 let settings={fee:13,balance:'',sort:'priority',...(safeParse(SETTINGS_KEY,{})||{})};
+if(!['priority','priceAsc','priceDesc','roiDesc','stale'].includes(settings.sort))settings.sort='priority';
 
 // v18: keep the user's data, but refresh priority flags based on sales/day through AK-47 | Дилетанты.
 const SKIN_CONFIG_VERSION=18;
@@ -242,7 +240,7 @@ if(Number(settings.skinConfigVersion||0)<SKIN_CONFIG_VERSION){
  const currentDefaults=new Map(defaults.map(d=>[d.name,d]));
  data=data.map(s=>{
   const d=currentDefaults.get(s.name);
-  return d?{...s,minFloat:d.minFloat,maxFloat:d.maxFloat,maxPrice:d.maxPrice,sell:d.sell,sales:d.sales,top:d.top}:s;
+  return d?{...s,rank:d.rank,minFloat:d.minFloat,maxFloat:d.maxFloat,maxPrice:d.maxPrice,sell:d.sell,sales:d.sales,top:d.top}:s;
  });
  settings.skinConfigVersion=SKIN_CONFIG_VERSION;
  localStorage.setItem(SKIN_KEY,JSON.stringify(data));
@@ -256,8 +254,7 @@ const money=n=>`${Number(n||0).toLocaleString('ru-RU',{maximumFractionDigits:2})
 const num=v=>Number(String(v??'').replace(',','.'))||0;
 
 // Backward compatibility: add new fields without losing saved links/settings.
-data=data.map((s,idx)=>({...s,favorite:!!s.favorite,lastChecked:s.lastChecked||null,customOrder:Number.isFinite(num(s.customOrder))&&num(s.customOrder)>0?Math.round(num(s.customOrder)):idx+1}));
-normalizeCustomOrder();
+data=data.map(s=>({...s,favorite:!!s.favorite,lastChecked:s.lastChecked||null}));
 trades=trades.map(t=>({...t,walletTracked:!!t.walletTracked,walletBuyDebit:num(t.walletBuyDebit),walletSaleCredit:num(t.walletSaleCredit)}));
 const today=()=>new Date().toISOString().slice(0,10);
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
@@ -292,28 +289,17 @@ function affordability(price){
  const diff=b-num(price);
  return diff>=0?{text:`хватает · останется ${money(diff)}`,ok:true}:{text:`не хватает ${money(Math.abs(diff))}`,ok:false};
 }
-function normalizeCustomOrder(){
- const ordered=[...data].sort((a,b)=>{
-   const ao=Number.isFinite(num(a.customOrder))&&num(a.customOrder)>0?num(a.customOrder):999999;
-   const bo=Number.isFinite(num(b.customOrder))&&num(b.customOrder)>0?num(b.customOrder):999999;
-   return ao-bo || a.name.localeCompare(b.name,'ru');
- });
- ordered.forEach((s,idx)=>{s.customOrder=idx+1});
-}
 function sortSkins(arr){
  const mode=settings.sort||'priority';
  return [...arr].sort((a,b)=>{
-  if(mode==='manual')return num(a.customOrder)-num(b.customOrder) || a.name.localeCompare(b.name,'ru');
-  if(mode==='priceAsc')return num(a.maxPrice)-num(b.maxPrice);
-  if(mode==='priceDesc')return num(b.maxPrice)-num(a.maxPrice);
-  if(mode==='roiDesc')return calcSkin(b).roi-calcSkin(a).roi;
-  if(mode==='salesDesc')return num(b.sales)-num(a.sales);
-  if(mode==='floatAsc')return num(a.maxFloat)-num(b.maxFloat) || num(a.maxPrice)-num(b.maxPrice);
+  if(mode==='priceAsc')return num(a.maxPrice)-num(b.maxPrice) || num(a.rank)-num(b.rank);
+  if(mode==='priceDesc')return num(b.maxPrice)-num(a.maxPrice) || num(a.rank)-num(b.rank);
+  if(mode==='roiDesc')return calcSkin(b).roi-calcSkin(a).roi || num(a.rank)-num(b.rank);
   if(mode==='stale'){
    const ta=a.lastChecked?Number(a.lastChecked):0,tb=b.lastChecked?Number(b.lastChecked):0;
-   return ta-tb;
+   return ta-tb || num(a.rank)-num(b.rank);
   }
-  return Number(b.top)-Number(a.top) || Number(b.favorite)-Number(a.favorite) || num(b.sales)-num(a.sales);
+  return num(a.rank)-num(b.rank);
  });
 }
 function saveAllSilent(){
@@ -385,7 +371,6 @@ function renderHunt(){
     <div class="editgrid">
       <div class="field"><label>Min float</label><input data-i="${i}" data-k="minFloat" inputmode="decimal" value="${esc(s.minFloat)}"></div>
       <div class="field"><label>Max float</label><input data-i="${i}" data-k="maxFloat" inputmode="decimal" value="${esc(s.maxFloat)}"></div>
-      <div class="field"><label>Своя сортировка</label><input data-i="${i}" data-k="customOrder" inputmode="numeric" value="${esc(s.customOrder)}"></div>
       <div class="field"><label>Лимит покупки, грн</label><input data-i="${i}" data-k="maxPrice" inputmode="decimal" value="${esc(s.maxPrice)}"></div>
       <div class="field"><label>Ожидаемая продажа, грн</label><input data-i="${i}" data-k="sell" inputmode="decimal" value="${esc(s.sell)}"></div>
       <div class="field full"><label>Steam-ссылка с фильтрами</label><input data-i="${i}" data-k="url" value="${esc(s.url)}" placeholder="https://steamcommunity.com/market/..."></div>
@@ -403,13 +388,7 @@ function renderHunt(){
  }));
  document.querySelectorAll('input[data-i]').forEach(inp=>inp.onchange=e=>{
    const i=+e.target.dataset.i,k=e.target.dataset.k;
-   if(k==='customOrder'){
-     const val=Math.max(1,Math.round(num(e.target.value)||1));
-     data[i][k]=val;
-     normalizeCustomOrder();
-   }else{
-     data[i][k]=e.target.value.trim();
-   }
+   data[i][k]=e.target.value.trim();
    saveAll();renderHunt();
  });
  const rois=data.map(s=>calcSkin(s).roi).filter(Number.isFinite);
@@ -564,15 +543,16 @@ function importData(file){
    if(Array.isArray(x.skins)){
     const allowed=new Set(defaults.map(d=>d.name));
     data=x.skins
-      .map((s,idx)=>({...s,name:s.name==='AWP | Green Energy'?'AWP | Зелёная энергия':s.name,favorite:!!s.favorite,lastChecked:s.lastChecked||null,customOrder:Number.isFinite(num(s.customOrder))&&num(s.customOrder)>0?Math.round(num(s.customOrder)):idx+1}))
+      .map(s=>({...s,name:s.name==='AWP | Green Energy'?'AWP | Зелёная энергия':s.name,favorite:!!s.favorite,lastChecked:s.lastChecked||null}))
       .filter(s=>allowed.has(s.name));
     const imported=new Map(data.map(s=>[s.name,s]));
-    data=defaults.map((d,idx)=>({...d,...(imported.get(d.name)||{}),name:d.name,favorite:!!(imported.get(d.name)||{}).favorite,lastChecked:(imported.get(d.name)||{}).lastChecked||null,customOrder:Number.isFinite(num((imported.get(d.name)||{}).customOrder))&&num((imported.get(d.name)||{}).customOrder)>0?Math.round(num((imported.get(d.name)||{}).customOrder)):idx+1}));
+    data=defaults.map(d=>({...d,...(imported.get(d.name)||{}),name:d.name,rank:d.rank,top:d.top,minFloat:d.minFloat,maxFloat:d.maxFloat,maxPrice:d.maxPrice,sell:d.sell,sales:d.sales,favorite:!!(imported.get(d.name)||{}).favorite,lastChecked:(imported.get(d.name)||{}).lastChecked||null}));
    }
-   normalizeCustomOrder();
    if(Array.isArray(x.trades))trades=x.trades.map(t=>({...t,walletTracked:!!t.walletTracked,walletBuyDebit:num(t.walletBuyDebit),walletSaleCredit:num(t.walletSaleCredit)}));
    if(Array.isArray(x.finance))finance=x.finance;
    if(x.settings)settings={...settings,...x.settings};
+   if(!['priority','priceAsc','priceDesc','roiDesc','stale'].includes(settings.sort))settings.sort='priority';
+   settings.skinConfigVersion=18;
    saveAll();renderHunt();renderTrades();renderStats();toast('Импортировано');
   }catch{toast('Ошибка файла')}
  };r.readAsText(file);
