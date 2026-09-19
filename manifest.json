@@ -1,6 +1,6 @@
 {
-  "name": "CS2 Low Float",
-  "short_name": "CS2 Float",
+  "name": "Floatly",
+  "short_name": "Floatly",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

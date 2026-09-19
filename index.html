@@ -10,7 +10,7 @@
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" href="./icon-192.png">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
-<title>CS2 Low Float</title>
+<title>Floatly</title>
 <style>
 :root{
  --bg:#0e0f10;--panel:#17191b;--panel2:#1c1f21;--panel3:#111315;--line:#2a2d30;
@@ -82,7 +82,7 @@ button,input,select,textarea{font:inherit}
 <div class="wrap">
   <div class="hero">
     <img class="appmark" src="./icon-192.png" alt="">
-    <div><h1>CS2 Low Float</h1><p id="heroSub">Ловля выгодных FT по float и цене</p></div>
+    <div><h1>Floatly</h1><p id="heroSub">Ловля выгодных FT по float и цене</p></div>
   </div>
 
   <section id="page-hunt" class="page active">
@@ -520,7 +520,7 @@ function renderStats(){
 
 function exportData(){
  const blob=new Blob([JSON.stringify({version:5,exportedAt:new Date().toISOString(),skins:data,trades,finance,settings},null,2)],{type:'application/json'});
- const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='cs2-low-float-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='floatly-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 }
 function importData(file){
  const r=new FileReader();r.onload=()=>{
