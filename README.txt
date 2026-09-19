@@ -1,4 +1,4 @@
-Floatly v17
+Floatly v18
 
 Изменения:
 - В основном списке теперь 15 скинов.
@@ -8,3 +8,6 @@ Floatly v17
 - Desert Eagle | Шелковица: 0.150–0.210, лимит 150 ₴.
 - Старые ссылки, избранное, время проверок, сделки, баланс и статистика сохраняются.
 - Импорт старого бэкапа не возвращает три удалённых скина.
+
+
+v18: Priority is set for the 10 skins with sales/day from the top of the current list through AK-47 | Дилетанты (>=120/day in the working data).
