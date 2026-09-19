@@ -4,59 +4,93 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#111827">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <title>CS2 Low Float</title>
 <style>
 :root{--bg:#0b1220;--card:#141f31;--muted:#93a4ba;--text:#f7fafc;--line:#26364d}
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-.wrap{max-width:780px;margin:auto;padding:16px 14px 90px} h1{font-size:24px;margin:4px 0}.sub{color:var(--muted);font-size:14px;margin-bottom:14px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{max-width:780px;margin:auto;padding:16px 14px 90px}
+h1{font-size:24px;margin:4px 0}
+.sub{color:var(--muted);font-size:14px;margin-bottom:14px}
 .toolbar{position:sticky;top:0;z-index:5;background:linear-gradient(var(--bg) 80%,transparent);padding:8px 0 14px}
 .search{width:100%;border:1px solid var(--line);background:#0f1828;color:white;border-radius:12px;padding:13px 14px;font-size:16px}
-.filters{display:flex;gap:8px;overflow:auto;padding:10px 0 2px}.chip{white-space:nowrap;border:1px solid var(--line);background:#111b2c;color:#dbe6f5;border-radius:999px;padding:8px 11px;font-size:13px}.chip.active{border-color:#3b82f6;background:#172554}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}.top{display:flex;justify-content:space-between;gap:10px}.name{font-weight:750;font-size:17px}.priority{font-size:12px;color:#08130c;background:#4ade80;border-radius:999px;padding:4px 8px;font-weight:800}.priority.second{background:#fbbf24;color:#211405}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px} label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px} input{width:100%;border:1px solid var(--line);background:#0e1726;color:white;border-radius:10px;padding:10px;font-size:15px}
-.urlrow{margin-top:9px}.actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}button,.open{border:0;border-radius:11px;padding:12px 14px;font-weight:750;font-size:15px;text-align:center;text-decoration:none}.open{background:#2563eb;color:white}.open.disabled{background:#334155;color:#94a3b8;pointer-events:none}button{background:#243246;color:white}.hint,.footer{font-size:12px;color:var(--muted);margin-top:7px}
-.status{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#052e16;color:#dcfce7;border:1px solid #166534;padding:10px 14px;border-radius:999px;opacity:0;transition:.2s;pointer-events:none}.status.show{opacity:1}
+.filters{display:flex;gap:8px;overflow:auto;padding:10px 0 2px}
+.chip{white-space:nowrap;border:1px solid var(--line);background:#111b2c;color:#dbe6f5;border-radius:999px;padding:8px 11px;font-size:13px}
+.chip.active{border-color:#3b82f6;background:#172554}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.name{font-weight:750;font-size:17px;line-height:1.25}
+.priority{font-size:12px;color:#08130c;background:#4ade80;border-radius:999px;padding:4px 8px;font-weight:800}
+.priority.second{background:#fbbf24;color:#211405}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}
+input{width:100%;border:1px solid var(--line);background:#0e1726;color:white;border-radius:10px;padding:10px;font-size:15px}
+.urlrow{margin-top:9px}
+.actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
+button,.open{border:0;border-radius:11px;padding:12px 14px;font-weight:750;font-size:15px;text-align:center;text-decoration:none}
+.open{background:#2563eb;color:white}
+.open.disabled{background:#334155;color:#94a3b8;pointer-events:none}
+button{background:#243246;color:white}
+.hint{font-size:12px;color:var(--muted);margin-top:7px}
+.status{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#052e16;color:#dcfce7;border:1px solid #166534;padding:10px 14px;border-radius:999px;opacity:0;transition:.2s;pointer-events:none}
+.status.show{opacity:1}
 </style>
 </head>
 <body>
 <div class="wrap">
 <h1>🔥 CS2 Low Float</h1>
-<div class="sub">Мобильная панель для Steam Market. Ссылки, float и лимиты сохраняются прямо в браузере.</div>
-<div class="toolbar"><input id="search" class="search" placeholder="Поиск скина…"><div class="filters"><button class="chip active" data-filter="all">Все 21</button><button class="chip" data-filter="top">🔥 В первую очередь</button><button class="chip" data-filter="cheap">До 300 грн</button></div></div>
+<div class="sub">18 рабочих скинов. Настройки сохраняются на телефоне.</div>
+<div class="toolbar">
+<input id="search" class="search" placeholder="Поиск скина…">
+<div class="filters">
+<button class="chip active" data-filter="all">Все 18</button>
+<button class="chip" data-filter="top">🔥 В первую очередь</button>
+<button class="chip" data-filter="cheap">До 300 грн</button>
+</div>
+</div>
 <div id="cards"></div>
-<div class="footer">Для каждого скина один раз настрой фильтры в beta Steam Market, скопируй ссылку и вставь её сюда. После этого кнопка «Открыть Steam» всегда будет вести сразу на твой фильтр.</div>
 </div>
 <div id="status" class="status">Сохранено ✓</div>
 <script>
-const skins = [
-{name:"Desert Eagle | Шелковица",top:true,maxFloat:"0.19",maxPrice:"140",url:"https://steamcommunity.com/market/listings/730/G180120A60A3004?category_Weapon=weapon_deagle&category_Exterior=WearCategory2&appid=730&sort=0&dir=0&assetproperty=CAIVmpkZPh3NzEw%2B"},
-{name:"M4A4 | Турбина",top:true,maxFloat:"0.18",maxPrice:"90",url:""},
-{name:"M4A1-S | Ликвидация",top:true,maxFloat:"0.19",maxPrice:"150",url:""},
-{name:"AK-47 | Полуночный глянец",top:true,maxFloat:"0.18",maxPrice:"200",url:""},
-{name:"AWP | Экзоскелет",top:true,maxFloat:"0.19",maxPrice:"",url:""},
-{name:"AWP | Green Energy",top:true,maxFloat:"0.19",maxPrice:"",url:""},
-{name:"AWP | Ледяной уголь",top:true,maxFloat:"0.19",maxPrice:"",url:""},
-{name:"M4A1-S | Взгляд в прошлое",top:false,maxFloat:"0.18",maxPrice:"",url:""},
-{name:"AK-47 | Нуво Руж",top:false,maxFloat:"0.20",maxPrice:"",url:""},
-{name:"M4A1-S | Ночной кошмар",top:false,maxFloat:"0.19",maxPrice:"",url:""},
-{name:"AK-47 | Красная линия",top:false,maxFloat:"0.20",maxPrice:"",url:""},
-{name:"AWP | Чёрный ящик",top:false,maxFloat:"0.19",maxPrice:"",url:""},
-{name:"AK-47 | Дилетанты",top:false,maxFloat:"0.20",maxPrice:"",url:""},
-{name:"USP-S | Зубоскал",top:false,maxFloat:"0.18",maxPrice:"",url:""},
-{name:"AK-47 | Полёт журавля",top:false,maxFloat:"0.19",maxPrice:"",url:""},
-{name:"AK-47 | Снежный вихрь",top:false,maxFloat:"0.19",maxPrice:"",url:""},
-{name:"M4A1-S | Стратосфера",top:false,maxFloat:"0.19",maxPrice:"",url:""},
-{name:"USP-S | Извилины",top:false,maxFloat:"0.18",maxPrice:"",url:""},
-{name:"M4A4 | Ликорис лучистый",top:false,maxFloat:"0.19",maxPrice:"",url:""},
-{name:"M4A1-S | Опустошитель",top:false,maxFloat:"0.19",maxPrice:"",url:""},
-{name:"M4A4 | Темукау",top:false,maxFloat:"0.19",maxPrice:"",url:""}
-];
-const key="cs2_low_float_panel_v1";let data=JSON.parse(localStorage.getItem(key)||"null")||skins;const cards=document.getElementById("cards"),search=document.getElementById("search");let activeFilter="all";
-function esc(s){return(s||"").replace(/[&<>\"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;","'":"&#39;"}[m]))}
-function save(){localStorage.setItem(key,JSON.stringify(data));const s=document.getElementById("status");s.classList.add("show");setTimeout(()=>s.classList.remove("show"),700)}
-function render(){const q=search.value.toLowerCase().trim();cards.innerHTML="";data.forEach((s,i)=>{const price=Number(s.maxPrice||0);if(q&&!s.name.toLowerCase().includes(q))return;if(activeFilter==="top"&&!s.top)return;if(activeFilter==="cheap"&&(!price||price>300))return;const el=document.createElement("div");el.className="card";el.innerHTML=`<div class="top"><div class="name">${esc(s.name)}</div><div class="priority ${s.top?"":"second"}">${s.top?"🔥 ТОП":"2 очередь"}</div></div><div class="grid"><div><label>Min float</label><input data-i="${i}" data-k="minFloat" inputmode="decimal" value="${esc(s.minFloat||"0.15")}"></div><div><label>Max float</label><input data-i="${i}" data-k="maxFloat" inputmode="decimal" value="${esc(s.maxFloat||"")}"></div><div style="grid-column:1/-1"><label>Макс. цена покупки, грн</label><input data-i="${i}" data-k="maxPrice" inputmode="decimal" placeholder="Например 140" value="${esc(s.maxPrice||"")}"></div></div><div class="urlrow"><label>Твоя ссылка Steam с фильтрами</label><input data-i="${i}" data-k="url" placeholder="Вставь ссылку Steam…" value="${esc(s.url||"")}"></div><div class="actions"><a class="open ${s.url?"":"disabled"}" ${s.url?`href="${esc(s.url)}" target="_blank" rel="noopener"`:""}>Открыть Steam</a><button data-copy="${i}">Копировать</button></div><div class="hint">Настройки сохраняются автоматически на этом телефоне.</div>`;cards.appendChild(el)});
-document.querySelectorAll("input[data-i]").forEach(inp=>inp.addEventListener("change",e=>{const i=+e.target.dataset.i,k=e.target.dataset.k;data[i][k]=e.target.value.trim();save();render()}));
-document.querySelectorAll("button[data-copy]").forEach(btn=>btn.addEventListener("click",async e=>{const s=data[+e.target.dataset.copy];const t=`${s.name}\nFloat: ${s.minFloat||"0.15"}–${s.maxFloat||"?"}\nМакс. цена: ${s.maxPrice||"—"} грн\n${s.url||""}`;try{await navigator.clipboard.writeText(t)}catch{}}));}
-search.addEventListener("input",render);document.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");activeFilter=b.dataset.filter;render()}));render();
+const skins = [{"name": "AK-47 | Красная линия", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "1580", "url": ""}, {"name": "Desert Eagle | Шелковица", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "125", "url": "https://steamcommunity.com/market/listings/730/G180120A60A3004?category_Weapon=weapon_deagle&category_Exterior=WearCategory2&appid=730&sort=0&dir=0&assetproperty=CAIVmpkZPh3NzEw%2B"}, {"name": "AWP | Экзоскелет", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "259", "url": ""}, {"name": "M4A4 | Турбина", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "75", "url": ""}, {"name": "M4A1-S | Взгляд в прошлое", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "211", "url": ""}, {"name": "M4A1-S | Ликвидация", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "123", "url": ""}, {"name": "AWP | Ледяной уголь", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "370", "url": ""}, {"name": "AWP | Green Energy", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "380", "url": ""}, {"name": "AK-47 | Нуво Руж", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "505", "url": ""}, {"name": "M4A1-S | Ночной кошмар", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "512", "url": ""}, {"name": "AK-47 | Полуночный глянец", "top": true, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "170", "url": ""}, {"name": "AWP | Чёрный ящик", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "260", "url": ""}, {"name": "AK-47 | Дилетанты", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "352", "url": ""}, {"name": "USP-S | Зубоскал", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "202", "url": ""}, {"name": "AK-47 | Полёт журавля", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "824", "url": ""}, {"name": "AK-47 | Снежный вихрь", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "848", "url": ""}, {"name": "M4A1-S | Стратосфера", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "228", "url": ""}, {"name": "USP-S | Извилины", "top": false, "minFloat": "0.15", "maxFloat": "0.20", "maxPrice": "233", "url": ""}];
+const key="cs2_low_float_panel_v2";
+let data=JSON.parse(localStorage.getItem(key)||"null")||skins;
+const cards=document.getElementById("cards"),search=document.getElementById("search");
+let activeFilter="all";
+function esc(s){return (s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+function save(){localStorage.setItem(key,JSON.stringify(data));const s=document.getElementById("status");s.classList.add("show");setTimeout(()=>s.classList.remove("show"),700);}
+function render(){
+ const q=search.value.toLowerCase().trim(); cards.innerHTML="";
+ data.forEach((s,i)=>{
+  const price=Number(s.maxPrice||0);
+  if(q&&!s.name.toLowerCase().includes(q))return;
+  if(activeFilter==="top"&&!s.top)return;
+  if(activeFilter==="cheap"&&(!price||price>300))return;
+  const el=document.createElement("div");el.className="card";
+  el.innerHTML=`<div class="top"><div class="name">${esc(s.name)}</div><div class="priority ${s.top?"":"second"}">${s.top?"🔥 ТОП":"2 очередь"}</div></div>
+  <div class="grid">
+  <div><label>Min float</label><input data-i="${i}" data-k="minFloat" inputmode="decimal" value="${esc(s.minFloat||"0.15")}"></div>
+  <div><label>Max float</label><input data-i="${i}" data-k="maxFloat" inputmode="decimal" value="${esc(s.maxFloat||"0.20")}"></div>
+  <div style="grid-column:1/-1"><label>Рабочая цена покупки, грн</label><input data-i="${i}" data-k="maxPrice" inputmode="decimal" value="${esc(s.maxPrice||"")}"></div>
+  </div>
+  <div class="urlrow"><label>Твоя ссылка Steam с фильтрами</label><input data-i="${i}" data-k="url" placeholder="Вставь ссылку Steam…" value="${esc(s.url||"")}"></div>
+  <div class="actions"><a class="open ${s.url?"":"disabled"}" ${s.url?`href="${esc(s.url)}" target="_blank" rel="noopener"`:""}>Открыть Steam</a><button data-copy="${i}">Копировать</button></div>
+  <div class="hint">Все изменения сохраняются автоматически.</div>`;
+  cards.appendChild(el);
+ });
+ document.querySelectorAll("input[data-i]").forEach(inp=>inp.addEventListener("change",e=>{const i=+e.target.dataset.i,k=e.target.dataset.k;data[i][k]=e.target.value.trim();save();render();}));
+ document.querySelectorAll("button[data-copy]").forEach(btn=>btn.addEventListener("click",async e=>{const s=data[+e.target.dataset.copy];const t=`${s.name}\nFloat: ${s.minFloat}–${s.maxFloat}\nЦена: ${s.maxPrice} грн\n${s.url||""}`;try{await navigator.clipboard.writeText(t)}catch{}}));
+}
+search.addEventListener("input",render);
+document.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");activeFilter=b.dataset.filter;render();}));
+if("serviceWorker" in navigator) window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));
+render();
 </script>
-</body></html>
+</body>
+</html>
