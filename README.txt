@@ -1,19 +1,13 @@
-Floatly v7
+Floatly v8 — forced PWA name refresh
 
-Upload these files to the root of your GitHub Pages repository, replacing the old ones:
-- index.html
-- manifest.json
-- sw.js
-- icon-192.png
-- icon-512.png
-- apple-touch-icon.png
+Upload/replace all files in the GitHub Pages repository root.
 
-Branding changed to Floatly:
-- App header: Floatly
-- Browser/PWA title: Floatly
-- Installed app name: Floatly
-- Backup filename: floatly-backup.json
+After GitHub Pages updates:
+1. Remove the old installed app/shortcut.
+2. In Chrome, open https://denislias.github.io/cs2-low-float/?v=8
+3. Refresh once.
+4. Use Add to Home screen / Install app again.
 
-Important:
-The existing localStorage keys were intentionally NOT renamed, so your saved Steam links,
-favorites, checked times, trades, balance, and settings continue to work after updating.
+The install dialog should now show: Floatly
+
+Existing local app data remains compatible because storage keys were not changed.
