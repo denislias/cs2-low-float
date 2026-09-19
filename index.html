@@ -9,9 +9,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="./manifest.json?v=11">
-<link rel="icon" href="./icon-192.png?v=11">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=11">
+<link rel="manifest" href="./manifest.json?v=12">
+<link rel="icon" href="./icon-192.png?v=12">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=12">
 <title>Floatly</title>
 <style>
 :root{
@@ -172,7 +172,7 @@ button,input,select,textarea{font:inherit}
       <div class="row" style="margin-top:6px"><span>Комиссия для расчётов</span><b><input id="feeInput" inputmode="decimal" value="13" style="width:62px;background:#111315;border:1px solid #303438;color:#eee;border-radius:8px;padding:6px;text-align:right"> %</b></div>
       <div class="row"><span>Свободный баланс Steam</span><b><input id="balanceInput" inputmode="decimal" placeholder="156.70" style="width:92px;background:#111315;border:1px solid #303438;color:#eee;border-radius:8px;padding:6px;text-align:right"></b></div>
       <div class="row"><span>Автоучёт покупок/продаж</span><b id="autoBalanceState">включён</b></div>
-      <div style="margin-top:8px;color:#777e85;font-size:10px;line-height:1.45">После того как укажешь баланс, новые покупки уменьшают его, а продажи увеличивают на сумму после комиссии. Старые сделки задним числом не пересчитываются.</div>
+      <div style="margin-top:8px;color:#777e85;font-size:10px;line-height:1.45">Баланс сохраняется автоматически сразу при вводе. Новые покупки уменьшают его, а продажи увеличивают на сумму после комиссии. Старые сделки задним числом не пересчитываются.</div>
     </div>
   </section>
 </div>
@@ -290,11 +290,14 @@ function sortSkins(arr){
   return Number(b.top)-Number(a.top) || Number(b.favorite)-Number(a.favorite) || num(b.sales)-num(a.sales);
  });
 }
-function saveAll(){
+function saveAllSilent(){
  localStorage.setItem(SKIN_KEY,JSON.stringify(data));
  localStorage.setItem(TRADE_KEY,JSON.stringify(trades));
  localStorage.setItem(FIN_KEY,JSON.stringify(finance));
  localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));
+}
+function saveAll(){
+ saveAllSilent();
  toast('Сохранено');
 }
 function toast(text){
@@ -551,12 +554,31 @@ $('saveFinanceBtn').onclick=saveFinance;
 $('exportBtn').onclick=exportData;
 $('importInput').onchange=e=>{if(e.target.files?.[0])importData(e.target.files[0]);e.target.value=''};
 $('feeInput').onchange=e=>{settings.fee=num(e.target.value)||13;saveAll();renderHunt();renderTrades();renderStats()};
-$('balanceInput').onchange=e=>{
- const v=e.target.value.trim();
- settings.balance=v===''?'':Math.max(0,num(v));
- saveAll();renderStats();renderHunt();
+$('balanceInput').oninput=e=>{
+ const raw=e.target.value.trim().replace(',','.');
+ if(raw===''){
+   settings.balance='';
+ }else{
+   const parsed=Number(raw);
+   if(Number.isFinite(parsed))settings.balance=Math.max(0,parsed);
+ }
+ // Save immediately on every typed digit so Android/Chrome cannot lose it on app close.
+ localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));
+ const bal=currentBalance();
+ $('manualBalance').textContent=bal===null?'—':money(bal);
+ $('balanceHero').textContent=bal===null?'—':money(bal);
+ $('balanceHeroBox').className='stat '+(bal!==null&&bal>0?'good':'');
+ $('autoBalanceState').textContent=hasBalance()?'включён':'ждёт баланс';
+ $('autoBalanceState').className=hasBalance()?'pos':'';
+};
+$('balanceInput').onchange=()=>{
+ saveAllSilent();
+ renderStats();
+ renderHunt();
 };
 
+window.addEventListener('pagehide',saveAllSilent);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')saveAllSilent()});
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
 renderHunt();renderTrades();renderStats();
 </script>
