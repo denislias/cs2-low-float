@@ -9,9 +9,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="./manifest.json?v=12">
-<link rel="icon" href="./icon-192.png?v=12">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=12">
+<link rel="manifest" href="./manifest.json?v=15">
+<link rel="icon" href="./icon-192.png?v=15">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=15">
 <title>Floatly</title>
 <style>
 :root{
@@ -36,20 +36,19 @@ button,input,select,textarea{font:inherit}
 .stat.good b{color:var(--good)} .stat.bad b{color:var(--bad)}
 .toolbar{position:sticky;top:0;z-index:20;background:linear-gradient(var(--bg) 82%,transparent);padding:6px 0 11px}
 .searchbox{position:relative}.search{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:14px;color:var(--text);padding:13px 14px 13px 39px;font-size:15px;outline:none}.search:focus{border-color:#4a4e53}.mag{position:absolute;left:14px;top:12px;color:var(--muted)}
-.filters{display:flex;gap:7px;overflow:auto;padding:9px 1px 1px;scrollbar-width:none}.filters::-webkit-scrollbar{display:none}
-.sortrow{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;margin-top:8px}.sortrow label{font-size:11px;color:var(--muted)}
-.sortselect{width:100%;background:#151719;border:1px solid var(--line);border-radius:11px;color:#d9dcdf;padding:9px 10px;font-size:12px;outline:none}
-.chip{white-space:nowrap;border:1px solid var(--line);background:#151719;color:var(--soft);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:650}.chip.active{background:#efefef;color:#111;border-color:#efefef}
+.filters{display:flex;flex-wrap:wrap;gap:8px;padding:10px 0 2px}
+.sortrow{display:grid;grid-template-columns:1fr;gap:6px;align-items:center;margin-top:10px}.sortrow label{font-size:11px;color:var(--muted);padding-left:2px}
+.sortselect{width:100%;background:#17191b;border:1px solid #2f3337;border-radius:13px;color:#e1e4e7;padding:11px 12px;font-size:13px;outline:none}
+.chip{white-space:nowrap;border:1px solid #2e3236;background:#17191b;color:#c2c7cc;border-radius:12px;padding:9px 12px;font-size:12px;font-weight:650;line-height:1}.chip.active{background:#f1f2f3;color:#111;border-color:#f1f2f3}
 .card{background:linear-gradient(180deg,#191b1d,#151719);border:1px solid var(--line);border-radius:18px;margin:10px 0;overflow:hidden}
 .card-main{padding:15px}.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.name{font-size:17px;font-weight:730;line-height:1.25;letter-spacing:-.25px}
-.headRight{display:flex;align-items:center;gap:7px}.starbtn{border:0;background:transparent;color:#6f757b;font-size:25px;line-height:1;padding:0 2px;cursor:pointer}.starbtn.on{color:#f2d47a}
+.headRight{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}.starbtn{border:1px solid #34383c;background:#1b1e21;color:#bcc1c7;font-size:11px;line-height:1;padding:8px 10px;border-radius:11px;cursor:pointer;font-weight:700}.starbtn.on{background:#23282d;color:#f2f3f4;border-color:#494f55}
 .checkline{margin-top:8px;font-size:10px;color:#777e85;display:flex;align-items:center;gap:6px}.checkdot{width:6px;height:6px;border-radius:50%;background:#555b61;display:inline-block}
 .checkline.fresh{color:#a7e3b9}.checkline.fresh .checkdot{background:#a7e3b9}
 .tag{font-size:9px;font-weight:800;letter-spacing:.45px;padding:5px 8px;border-radius:999px;background:var(--goodBg);color:var(--good);border:1px solid #31543a}.tag.second{background:#222426;color:#a7adb3;border-color:#373b3f}
 .meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.pill{background:#202326;border:1px solid #2d3135;border-radius:9px;padding:6px 8px;font-size:11px;color:#b7bcc1}.pill strong{color:#f1f2f3}
 .numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.num{padding:10px;background:#111315;border:1px solid #25282b;border-radius:12px}.num label{display:block;color:#747a80;font-size:10px;margin-bottom:4px}.num b{font-size:14px}.pos{color:var(--good)!important}.neg{color:var(--bad)!important}
-.actions{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-top:12px}.btn,.open,.editbtn,.checkbtn{border:0;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:750;text-decoration:none;text-align:center;cursor:pointer}
-.checkbtn{background:#1e2a21;color:#a7e3b9;border:1px solid #304936;padding-left:12px;padding-right:12px}
+.actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}.btn,.open,.editbtn{border:0;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:750;text-decoration:none;text-align:center;cursor:pointer}
 .open,.primary{background:#f1f2f3;color:#111}.open.disabled{background:#272a2d;color:#686e74;pointer-events:none}.editbtn,.secondary{background:#24272a;color:#d9dcdf;border:1px solid #303438}
 .danger{background:#2b1817;color:#f0aaa5;border:1px solid #5a2b27}
 .editor{display:none;border-top:1px solid var(--line);padding:13px 15px 15px;background:#121416}.editor.opened{display:block}
@@ -100,12 +99,13 @@ button,input,select,textarea{font:inherit}
         <button class="chip" data-filter="top">Приоритет</button>
         <button class="chip" data-filter="cheap">До 300 ₴</button>
         <button class="chip" data-filter="roi30">ROI 30%+</button>
-        <button class="chip" data-filter="fav">⭐ Избранное</button>
+        <button class="chip" data-filter="fav">Избранные</button>
       </div>
       <div class="sortrow">
         <label>Сортировка</label>
         <select id="sortSelect" class="sortselect">
           <option value="priority">По приоритету</option>
+          <option value="manual">Своя сортировка</option>
           <option value="priceAsc">Цена ↑</option>
           <option value="priceDesc">Цена ↓</option>
           <option value="roiDesc">ROI ↓</option>
@@ -124,7 +124,7 @@ button,input,select,textarea{font:inherit}
       <div class="stat good"><b id="realizedProfit">0 ₴</b><span>реализ. прибыль</span></div>
       <div class="stat"><b id="inventoryCost">0 ₴</b><span>в предметах</span></div>
     </div>
-    <button id="addTradeBtn" class="bigAdd">＋ Добавить сделку</button>
+    <button id="addTradeBtn" class="bigAdd">Добавить сделку</button>
     <div class="filters">
       <button class="chip active" data-trade-filter="all">Все</button>
       <button class="chip" data-trade-filter="open">В инвентаре</button>
@@ -154,7 +154,7 @@ button,input,select,textarea{font:inherit}
     <div class="panel">
       <div class="sectionTitle">
         <div><h2>Пополнения Steam</h2><p>Не считаются торговой прибылью</p></div>
-        <button id="addFinanceBtn" class="btn secondary">＋</button>
+        <button id="addFinanceBtn" class="btn secondary">Добавить</button>
       </div>
       <div class="rows">
         <div class="row"><span>Всего пополнено</span><b id="depositsTotal">0 ₴</b></div>
@@ -233,14 +233,15 @@ let trades=Array.isArray(safeParse(TRADE_KEY,[]))?safeParse(TRADE_KEY,[]):[];
 let finance=Array.isArray(safeParse(FIN_KEY,[]))?safeParse(FIN_KEY,[]):[];
 let settings={fee:13,balance:'',sort:'priority',...(safeParse(SETTINGS_KEY,{})||{})};
 
-let active='all',tradeFilter='all',currentPage='hunt';
+let active=settings.filter||'all',tradeFilter=settings.tradeFilter||'all',currentPage='hunt';
 
 const $=id=>document.getElementById(id);
 const money=n=>`${Number(n||0).toLocaleString('ru-RU',{maximumFractionDigits:2})} ₴`;
 const num=v=>Number(String(v??'').replace(',','.'))||0;
 
 // Backward compatibility: add new fields without losing saved links/settings.
-data=data.map(s=>({...s,favorite:!!s.favorite,lastChecked:s.lastChecked||null}));
+data=data.map((s,idx)=>({...s,favorite:!!s.favorite,lastChecked:s.lastChecked||null,customOrder:Number.isFinite(num(s.customOrder))&&num(s.customOrder)>0?Math.round(num(s.customOrder)):idx+1}));
+normalizeCustomOrder();
 trades=trades.map(t=>({...t,walletTracked:!!t.walletTracked,walletBuyDebit:num(t.walletBuyDebit),walletSaleCredit:num(t.walletSaleCredit)}));
 const today=()=>new Date().toISOString().slice(0,10);
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
@@ -275,9 +276,18 @@ function affordability(price){
  const diff=b-num(price);
  return diff>=0?{text:`хватает · останется ${money(diff)}`,ok:true}:{text:`не хватает ${money(Math.abs(diff))}`,ok:false};
 }
+function normalizeCustomOrder(){
+ const ordered=[...data].sort((a,b)=>{
+   const ao=Number.isFinite(num(a.customOrder))&&num(a.customOrder)>0?num(a.customOrder):999999;
+   const bo=Number.isFinite(num(b.customOrder))&&num(b.customOrder)>0?num(b.customOrder):999999;
+   return ao-bo || a.name.localeCompare(b.name,'ru');
+ });
+ ordered.forEach((s,idx)=>{s.customOrder=idx+1});
+}
 function sortSkins(arr){
  const mode=settings.sort||'priority';
  return [...arr].sort((a,b)=>{
+  if(mode==='manual')return num(a.customOrder)-num(b.customOrder) || a.name.localeCompare(b.name,'ru');
   if(mode==='priceAsc')return num(a.maxPrice)-num(b.maxPrice);
   if(mode==='priceDesc')return num(b.maxPrice)-num(a.maxPrice);
   if(mode==='roiDesc')return calcSkin(b).roi-calcSkin(a).roi;
@@ -334,7 +344,7 @@ function renderHunt(){
     <div class="head">
       <div class="name">${esc(s.name)}</div>
       <div class="headRight">
-        <button class="starbtn ${s.favorite?'on':''}" data-fav="${i}" aria-label="Избранное">${s.favorite?'★':'☆'}</button>
+        <button class="starbtn ${s.favorite?'on':''}" data-fav="${i}" aria-label="Избранное">${s.favorite?'В избранном':'В избранное'}</button>
         <div class="tag ${s.top?'':'second'}">${s.top?'ПРИОРИТЕТ':'ОБЫЧНЫЙ'}</div>
       </div>
     </div>
@@ -352,7 +362,6 @@ function renderHunt(){
     </div>
     <div class="actions">
       <a class="open ${s.url?'':'disabled'}" data-open="${i}" ${s.url?`href="${esc(s.url)}" target="_blank" rel="noopener"`:''}>Открыть Steam</a>
-      <button class="checkbtn" data-check="${i}">✓</button>
       <button class="editbtn" data-edit="${i}">Настроить</button>
     </div>
    </div>
@@ -360,6 +369,7 @@ function renderHunt(){
     <div class="editgrid">
       <div class="field"><label>Min float</label><input data-i="${i}" data-k="minFloat" inputmode="decimal" value="${esc(s.minFloat)}"></div>
       <div class="field"><label>Max float</label><input data-i="${i}" data-k="maxFloat" inputmode="decimal" value="${esc(s.maxFloat)}"></div>
+      <div class="field"><label>Своя сортировка</label><input data-i="${i}" data-k="customOrder" inputmode="numeric" value="${esc(s.customOrder)}"></div>
       <div class="field"><label>Лимит покупки, грн</label><input data-i="${i}" data-k="maxPrice" inputmode="decimal" value="${esc(s.maxPrice)}"></div>
       <div class="field"><label>Ожидаемая продажа, грн</label><input data-i="${i}" data-k="sell" inputmode="decimal" value="${esc(s.sell)}"></div>
       <div class="field full"><label>Steam-ссылка с фильтрами</label><input data-i="${i}" data-k="url" value="${esc(s.url)}" placeholder="https://steamcommunity.com/market/..."></div>
@@ -372,15 +382,19 @@ function renderHunt(){
  document.querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>{
    const i=+b.dataset.fav;data[i].favorite=!data[i].favorite;saveAll();renderHunt();
  });
- document.querySelectorAll('[data-check]').forEach(b=>b.onclick=()=>{
-   const i=+b.dataset.check;data[i].lastChecked=Date.now();saveAll();renderHunt();
- });
  document.querySelectorAll('[data-open]').forEach(a=>a.addEventListener('click',()=>{
    const i=+a.dataset.open;if(data[i]?.url){data[i].lastChecked=Date.now();localStorage.setItem(SKIN_KEY,JSON.stringify(data));setTimeout(renderHunt,250)}
  }));
  document.querySelectorAll('input[data-i]').forEach(inp=>inp.onchange=e=>{
    const i=+e.target.dataset.i,k=e.target.dataset.k;
-   data[i][k]=e.target.value.trim();saveAll();renderHunt();
+   if(k==='customOrder'){
+     const val=Math.max(1,Math.round(num(e.target.value)||1));
+     data[i][k]=val;
+     normalizeCustomOrder();
+   }else{
+     data[i][k]=e.target.value.trim();
+   }
+   saveAll();renderHunt();
  });
  const rois=data.map(s=>calcSkin(s).roi).filter(Number.isFinite);
  $('countStat').textContent=data.length;
@@ -531,7 +545,8 @@ function importData(file){
  const r=new FileReader();r.onload=()=>{
   try{
    const x=JSON.parse(r.result);
-   if(Array.isArray(x.skins))data=x.skins.map(s=>({...s,favorite:!!s.favorite,lastChecked:s.lastChecked||null}));
+   if(Array.isArray(x.skins))data=x.skins.map((s,idx)=>({...s,favorite:!!s.favorite,lastChecked:s.lastChecked||null,customOrder:Number.isFinite(num(s.customOrder))&&num(s.customOrder)>0?Math.round(num(s.customOrder)):idx+1}));
+   normalizeCustomOrder();
    if(Array.isArray(x.trades))trades=x.trades.map(t=>({...t,walletTracked:!!t.walletTracked,walletBuyDebit:num(t.walletBuyDebit),walletSaleCredit:num(t.walletSaleCredit)}));
    if(Array.isArray(x.finance))finance=x.finance;
    if(x.settings)settings={...settings,...x.settings};
@@ -542,8 +557,22 @@ function importData(file){
 
 $('search').oninput=renderHunt;
 $('sortSelect').onchange=e=>{settings.sort=e.target.value;saveAll();renderHunt()};
-document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');active=b.dataset.filter;renderHunt()});
-document.querySelectorAll('[data-trade-filter]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-trade-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');tradeFilter=b.dataset.tradeFilter;renderTrades()});
+document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));
+ b.classList.add('active');
+ active=b.dataset.filter;
+ settings.filter=active;
+ saveAllSilent();
+ renderHunt();
+});
+document.querySelectorAll('[data-trade-filter]').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('[data-trade-filter]').forEach(x=>x.classList.remove('active'));
+ b.classList.add('active');
+ tradeFilter=b.dataset.tradeFilter;
+ settings.tradeFilter=tradeFilter;
+ saveAllSilent();
+ renderTrades();
+});
 document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>switchPage(b.dataset.page));
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
 document.querySelectorAll('.modalWrap').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
@@ -579,6 +608,11 @@ $('balanceInput').onchange=()=>{
 
 window.addEventListener('pagehide',saveAllSilent);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')saveAllSilent()});
+function restoreFilterUI(){
+ document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x.dataset.filter===active));
+ document.querySelectorAll('[data-trade-filter]').forEach(x=>x.classList.toggle('active',x.dataset.tradeFilter===tradeFilter));
+}
+restoreFilterUI();
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
 renderHunt();renderTrades();renderStats();
 </script>
