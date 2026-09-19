@@ -9,9 +9,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="./manifest.json?v=15">
-<link rel="icon" href="./icon-192.png?v=15">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=15">
+<link rel="manifest" href="./manifest.json?v=16">
+<link rel="icon" href="./icon-192.png?v=16">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=16">
 <title>Floatly</title>
 <style>
 :root{
@@ -41,11 +41,10 @@ button,input,select,textarea{font:inherit}
 .sortselect{width:100%;background:#17191b;border:1px solid #2f3337;border-radius:13px;color:#e1e4e7;padding:11px 12px;font-size:13px;outline:none}
 .chip{white-space:nowrap;border:1px solid #2e3236;background:#17191b;color:#c2c7cc;border-radius:12px;padding:9px 12px;font-size:12px;font-weight:650;line-height:1}.chip.active{background:#f1f2f3;color:#111;border-color:#f1f2f3}
 .card{background:linear-gradient(180deg,#191b1d,#151719);border:1px solid var(--line);border-radius:18px;margin:10px 0;overflow:hidden}
-.card-main{padding:15px}.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.name{font-size:17px;font-weight:730;line-height:1.25;letter-spacing:-.25px}
-.headRight{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}.starbtn{border:1px solid #34383c;background:#1b1e21;color:#bcc1c7;font-size:11px;line-height:1;padding:8px 10px;border-radius:11px;cursor:pointer;font-weight:700}.starbtn.on{background:#23282d;color:#f2f3f4;border-color:#494f55}
+.card-main{padding:15px}.head{display:flex;flex-direction:column;gap:10px;align-items:stretch}.name{font-size:17px;font-weight:730;line-height:1.25;letter-spacing:-.25px;min-width:0}.headRight{display:flex;align-items:center;justify-content:flex-start;gap:7px;flex-wrap:nowrap;min-height:32px}.starbtn{height:32px;border:1px solid #34383c;background:#1b1e21;color:#bcc1c7;font-size:11px;line-height:1;padding:0 10px;border-radius:10px;cursor:pointer;font-weight:700;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}.starbtn.on{background:#23282d;color:#f2f3f4;border-color:#494f55}
 .checkline{margin-top:8px;font-size:10px;color:#777e85;display:flex;align-items:center;gap:6px}.checkdot{width:6px;height:6px;border-radius:50%;background:#555b61;display:inline-block}
 .checkline.fresh{color:#a7e3b9}.checkline.fresh .checkdot{background:#a7e3b9}
-.tag{font-size:9px;font-weight:800;letter-spacing:.45px;padding:5px 8px;border-radius:999px;background:var(--goodBg);color:var(--good);border:1px solid #31543a}.tag.second{background:#222426;color:#a7adb3;border-color:#373b3f}
+.tag{height:32px;font-size:9px;font-weight:800;letter-spacing:.45px;padding:0 10px;border-radius:10px;background:var(--goodBg);color:var(--good);border:1px solid #31543a;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}.tag.second{background:#222426;color:#a7adb3;border-color:#373b3f}
 .meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.pill{background:#202326;border:1px solid #2d3135;border-radius:9px;padding:6px 8px;font-size:11px;color:#b7bcc1}.pill strong{color:#f1f2f3}
 .numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.num{padding:10px;background:#111315;border:1px solid #25282b;border-radius:12px}.num label{display:block;color:#747a80;font-size:10px;margin-bottom:4px}.num b{font-size:14px}.pos{color:var(--good)!important}.neg{color:var(--bad)!important}
 .actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}.btn,.open,.editbtn{border:0;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:750;text-decoration:none;text-align:center;cursor:pointer}
@@ -219,7 +218,7 @@ button,input,select,textarea{font:inherit}
 <div id="toast" class="toast">Сохранено</div>
 
 <script>
-const defaults = [{"name": "AK-47 | Красная линия", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 1800, "sell": 3000, "sales": 86, "url": ""}, {"name": "Desert Eagle | Шелковица", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 145, "sell": 232, "sales": 332, "url": "https://steamcommunity.com/market/listings/730/G180120A60A3004?price_max=15000&price_currency=18&category_Exterior=WearCategory2&appid=730&sort=0&dir=0&assetproperty=CAIVmpkZPh1cj0I%2B"}, {"name": "AWP | Экзоскелет", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 300, "sell": 480, "sales": 66, "url": ""}, {"name": "M4A4 | Турбина", "top": true, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 85, "sell": 133, "sales": 116, "url": ""}, {"name": "M4A1-S | Взгляд в прошлое", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 250, "sell": 370, "sales": 53, "url": ""}, {"name": "M4A1-S | Ликвидация", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 140, "sell": 205, "sales": 257, "url": ""}, {"name": "AWP | Ледяной уголь", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 425, "sell": 610, "sales": 110, "url": ""}, {"name": "AWP | Green Energy", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 430, "sell": 620, "sales": 167, "url": ""}, {"name": "AK-47 | Нуво Руж", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 550, "sell": 800, "sales": 132, "url": ""}, {"name": "M4A1-S | Ночной кошмар", "top": false, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 550, "sell": 800, "sales": 95, "url": ""}, {"name": "AK-47 | Полуночный глянец", "top": true, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 185, "sell": 263, "sales": 549, "url": ""}, {"name": "AWP | Чёрный ящик", "top": false, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 285, "sell": 400, "sales": 94, "url": ""}, {"name": "AK-47 | Дилетанты", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 380, "sell": 530, "sales": 120, "url": ""}, {"name": "USP-S | Зубоскал", "top": false, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 210, "sell": 290, "sales": 381, "url": ""}, {"name": "AK-47 | Полёт журавля", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 840, "sell": 1160, "sales": 242, "url": ""}, {"name": "AK-47 | Снежный вихрь", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 850, "sell": 1169, "sales": 109, "url": ""}, {"name": "M4A1-S | Стратосфера", "top": false, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 225, "sell": 310, "sales": 150, "url": ""}, {"name": "USP-S | Извилины", "top": false, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 225, "sell": 315, "sales": 227, "url": ""}];
+const defaults = [{"name": "AK-47 | Красная линия", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 1800, "sell": 3000, "sales": 86, "url": ""}, {"name": "Desert Eagle | Шелковица", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 145, "sell": 232, "sales": 332, "url": "https://steamcommunity.com/market/listings/730/G180120A60A3004?price_max=15000&price_currency=18&category_Exterior=WearCategory2&appid=730&sort=0&dir=0&assetproperty=CAIVmpkZPh1cj0I%2B"}, {"name": "AWP | Экзоскелет", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 300, "sell": 480, "sales": 66, "url": ""}, {"name": "M4A4 | Турбина", "top": true, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 85, "sell": 133, "sales": 116, "url": ""}, {"name": "M4A1-S | Взгляд в прошлое", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 250, "sell": 370, "sales": 53, "url": ""}, {"name": "M4A1-S | Ликвидация", "top": true, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 140, "sell": 205, "sales": 257, "url": ""}, {"name": "AWP | Ледяной уголь", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 425, "sell": 610, "sales": 110, "url": ""}, {"name": "AWP | Зелёная энергия", "top": true, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 430, "sell": 620, "sales": 167, "url": ""}, {"name": "AK-47 | Нуво Руж", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 550, "sell": 800, "sales": 132, "url": ""}, {"name": "M4A1-S | Ночной кошмар", "top": false, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 550, "sell": 800, "sales": 95, "url": ""}, {"name": "AK-47 | Полуночный глянец", "top": true, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 185, "sell": 263, "sales": 549, "url": ""}, {"name": "AWP | Чёрный ящик", "top": false, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 285, "sell": 400, "sales": 94, "url": ""}, {"name": "AK-47 | Дилетанты", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 380, "sell": 530, "sales": 120, "url": ""}, {"name": "USP-S | Зубоскал", "top": false, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 210, "sell": 290, "sales": 381, "url": ""}, {"name": "AK-47 | Полёт журавля", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 840, "sell": 1160, "sales": 242, "url": ""}, {"name": "AK-47 | Снежный вихрь", "top": false, "minFloat": "0.150", "maxFloat": "0.200", "maxPrice": 850, "sell": 1169, "sales": 109, "url": ""}, {"name": "M4A1-S | Стратосфера", "top": false, "minFloat": "0.150", "maxFloat": "0.190", "maxPrice": 225, "sell": 310, "sales": 150, "url": ""}, {"name": "USP-S | Извилины", "top": false, "minFloat": "0.150", "maxFloat": "0.180", "maxPrice": 225, "sell": 315, "sales": 227, "url": ""}];
 const SKIN_KEY='cs2_low_float_panel_v2';
 const TRADE_KEY='cs2_low_float_trades_v1';
 const FIN_KEY='cs2_low_float_finance_v1';
@@ -228,7 +227,11 @@ const SETTINGS_KEY='cs2_low_float_settings_v1';
 function safeParse(k,fallback){try{const v=JSON.parse(localStorage.getItem(k)||'null');return v??fallback}catch{return fallback}}
 const old=safeParse(SKIN_KEY,[]);
 const oldMap=new Map((Array.isArray(old)?old:[]).map(x=>[x.name,x]));
-let data=defaults.map(d=>({...d,...(oldMap.get(d.name)||{}),sell:d.sell,sales:d.sales,top:d.top}));
+if(oldMap.has('AWP | Green Energy')&&!oldMap.has('AWP | Зелёная энергия')){
+ const legacy=oldMap.get('AWP | Green Energy');
+ oldMap.set('AWP | Зелёная энергия',{...legacy,name:'AWP | Зелёная энергия'});
+}
+let data=defaults.map(d=>({...d,...(oldMap.get(d.name)||{}),name:d.name,sell:d.sell,sales:d.sales,top:d.top}));
 let trades=Array.isArray(safeParse(TRADE_KEY,[]))?safeParse(TRADE_KEY,[]):[];
 let finance=Array.isArray(safeParse(FIN_KEY,[]))?safeParse(FIN_KEY,[]):[];
 let settings={fee:13,balance:'',sort:'priority',...(safeParse(SETTINGS_KEY,{})||{})};
@@ -545,7 +548,7 @@ function importData(file){
  const r=new FileReader();r.onload=()=>{
   try{
    const x=JSON.parse(r.result);
-   if(Array.isArray(x.skins))data=x.skins.map((s,idx)=>({...s,favorite:!!s.favorite,lastChecked:s.lastChecked||null,customOrder:Number.isFinite(num(s.customOrder))&&num(s.customOrder)>0?Math.round(num(s.customOrder)):idx+1}));
+   if(Array.isArray(x.skins))data=x.skins.map((s,idx)=>({...s,name:s.name==='AWP | Green Energy'?'AWP | Зелёная энергия':s.name,favorite:!!s.favorite,lastChecked:s.lastChecked||null,customOrder:Number.isFinite(num(s.customOrder))&&num(s.customOrder)>0?Math.round(num(s.customOrder)):idx+1}));
    normalizeCustomOrder();
    if(Array.isArray(x.trades))trades=x.trades.map(t=>({...t,walletTracked:!!t.walletTracked,walletBuyDebit:num(t.walletBuyDebit),walletSaleCredit:num(t.walletSaleCredit)}));
    if(Array.isArray(x.finance))finance=x.finance;
